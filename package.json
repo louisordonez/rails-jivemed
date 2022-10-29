@@ -1,0 +1,9 @@
+{
+  "name": "jivemed",
+  "packageManager": "yarn@3.2.2",
+  "devDependencies": {
+    "@prettier/plugin-ruby": "^3.2.2",
+    "prettier": "2.2.1",
+    "prettier-plugin-erb": "^0.4.0"
+  }
+}
