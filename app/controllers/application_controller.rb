@@ -5,6 +5,20 @@ class ApplicationController < ActionController::API
 
   private
 
+  def restrict_user
+    if (
+         @current_user.roles.first == patient_role ||
+           @current_user.roles.first == doctor_role
+       )
+      render json: {
+               error: {
+                 message: 'Request forbidden.'
+               }
+             },
+             status: :forbidden
+    end
+  end
+
   def admin_role
     Role.find_by(name: 'admin')
   end

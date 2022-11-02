@@ -6,6 +6,9 @@ Rails.application.routes.draw do
       get '/auth/verify', to: 'authentication#verify_email'
       post '/auth/sign_in', to: 'authentication#sign_in'
 
+      # Users - Admin
+      get '/users/show/:id', to: 'users#show_user'
+
       # Users - Patients
       post '/users/patients', to: 'users#create_patient'
     end

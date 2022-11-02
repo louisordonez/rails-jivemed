@@ -2,7 +2,12 @@ class Api::V1::UsersController < ApplicationController
   skip_before_action :authenticate_request,
                      :email_verified?,
                      only: [:create_patient]
-  before_action :set_user, only: %i[show destroy]
+  before_action :restrict_user, only: [:show_user]
+  before_action :set_user, only: [:show_user]
+
+  def show_user
+    render json: @user, status: :ok
+  end
 
   def create_patient
     @user = User.new(user_params)
