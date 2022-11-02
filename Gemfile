@@ -49,3 +49,5 @@ end
 gem 'jwt'
 
 gem 'bcrypt'
+
+gem 'prettier'

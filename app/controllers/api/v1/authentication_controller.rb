@@ -1,55 +1,75 @@
 class Api::V1::AuthenticationController < ApplicationController
-  skip_before_action :authenticate_request
+  skip_before_action :authenticate_request, :email_verified?
 
   def verify_email
-    token = params[:token]
-
+    email_token = params[:email_token]
     begin
-      decoded = JsonWebToken.decode(token)
+      decoded = JsonWebToken.decode(email_token)
       @user = User.find_by_email(decoded[:user_email])
-      
       raise ActiveRecord::RecordNotFound if !@user
     rescue ActiveRecord::RecordNotFound
       render json: {
-               error: {
-                 message: 'Record not found.'
+               errors: {
+                 messages: ['Record not found.']
                }
              },
              status: :not_found
     rescue JWT::ExpiredSignature
       render json: {
-               error: {
-                 message:
-                   'Confirmation invalid. Verification token has expired.'
+               errors: {
+                 messages: [
+                   'Token has expired. Please request a new one to continue.'
+                 ]
                }
              },
              status: :unprocessable_entity
     rescue JWT::DecodeError
       render json: {
-               error: {
-                 message: 'Token invalid.'
+               errors: {
+                 messages: ['Invalid token.']
                }
              },
              status: :unprocessable_entity
     else
       if @user.email_verified
-        redirect_to JIVEMED_FRONTEND_URL, allow_other_host: true
+        render json: {
+                 errors: {
+                   messages: ['Your email has already been verified.']
+                 }
+               },
+               status: :accepted
       else
         @user.update(email_verified: true)
-
-        redirect_to JIVEMED_FRONTEND_URL, allow_other_host: true
+        render json: {
+                 user: @user,
+                 messages: ['Your email has been successfully verified!']
+               },
+               status: :ok
       end
     end
   end
 
-  def login
+  def sign_in
     @user = User.find_by_email(params[:email])
-
-    if @user&.authenticate(params[:password])
-      token = jwt_encode(user_id: @user.id)
-      render json: { token: token }, status: :ok
+    if (@user&.authenticate(params[:password]))
+      payload = { user_id: @user.id }
+      exp = 7.days.from_now.to_i
+      access_token = JsonWebToken.encode(payload, exp)
+      render json: {
+               user: @user,
+               expiration: exp,
+               access_token: access_token
+             },
+             status: :ok
     else
-      render json: { error: 'unauthorized' }, status: :unauthorized
+      render json: {
+               errors: {
+                 messages: [
+                   'Invalid credentials. Please check your email and password'
+                 ]
+               }
+             },
+             status: :unauthorized
     end
   end
 end
