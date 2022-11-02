@@ -7,7 +7,6 @@ class ApplicationController < ActionController::API
 
   def authenticate_request
     authorization = request.headers['Authorization']
-
     if authorization
       access_token = authorization.split(' ').last
       begin
