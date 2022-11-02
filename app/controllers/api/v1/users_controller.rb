@@ -2,7 +2,24 @@ class Api::V1::UsersController < ApplicationController
   skip_before_action :authenticate_request,
                      :email_verified?,
                      only: [:create_patient]
-  before_action :set_user, only: %i[show destroy]
+  before_action :restrict_user, only: %i[index show_user]
+  before_action :set_user, only: [:show_user]
+
+  def index
+    @users =
+      User.all.select do |user|
+        (user.roles.first == patient_role || user.roles.first == doctor_role)
+      end
+    render json: @users, status: :ok
+  end
+
+  def show_current_user
+    render json: @current_user, status: :ok
+  end
+
+  def show_user
+    render json: @user, status: :ok
+  end
 
   def create_patient
     @user = User.new(user_params)
