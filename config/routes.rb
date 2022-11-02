@@ -7,6 +7,7 @@ Rails.application.routes.draw do
       post '/auth/sign_in', to: 'authentication#sign_in'
 
       # Users - Admin
+      get '/users/all', to: 'users#index'
       get '/users/show/:id', to: 'users#show_user'
 
       # Users - Patients
