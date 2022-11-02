@@ -1,5 +1,4 @@
 class Api::V1::UsersController < ApplicationController
-  # skip_before_action :authenticate_request, only: [:create_user]
   skip_before_action :authenticate_request
   before_action :set_user, only: %i[show destroy]
 
@@ -17,8 +16,14 @@ class Api::V1::UsersController < ApplicationController
 
     if @user.save
       payload = { user_id: @user.id }
-      access_token = JsonWebToken.encode(payload, 7.days.from_now)
-      render json: { user: @user, access_token: access_token }, status: :created
+      email_token = JsonWebToken.encode(payload, 7.days.from_now)
+      render json: {
+               user: @user,
+               email_token: email_token,
+               message:
+                 'A confirmation email has been sent to verify your account!'
+             },
+             status: :created
     else
       render json: {
                errors: {

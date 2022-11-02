@@ -3,13 +3,10 @@ Rails.application.routes.draw do
     namespace :v1 do
       # Authentication
       get '/auth/verify', to: 'authentication#verify_email'
-      post '/auth/login', to: 'authentication#login'
+      post '/auth/sign_in', to: 'authentication#sign_in'
 
-      # Users
-      # Patient
+      # Users - Patients
       post 'users/patients', to: 'users#create_patient'
-
-      # resources :users
     end
   end
 end
