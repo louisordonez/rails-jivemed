@@ -1,9 +1,20 @@
 class ApplicationController < ActionController::API
   include JsonWebToken
 
-  before_action :authenticate_request
+  before_action :authenticate_request, :email_verified?
 
   private
+
+  def email_verified?
+    if !@current_user.email_verified
+      render json: {
+               error: {
+                 message: 'Email needs to be verified to continue.'
+               }
+             },
+             status: :forbidden
+    end
+  end
 
   def authenticate_request
     authorization = request.headers['Authorization']
@@ -22,7 +33,7 @@ class ApplicationController < ActionController::API
       rescue JWT::ExpiredSignature
         render json: {
                  errors: {
-                   messages: ['Token has expired. Sign in to continue.']
+                   messages: ['Token has expired. Please sign in to continue.']
                  }
                },
                status: :unauthorized
@@ -37,7 +48,7 @@ class ApplicationController < ActionController::API
     else
       render json: {
                errors: {
-                 messages: ['Sign in to continue.']
+                 messages: ['Please sign in to continue.']
                }
              },
              status: :forbidden

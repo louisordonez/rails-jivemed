@@ -1,5 +1,7 @@
 class Api::V1::UsersController < ApplicationController
-  skip_before_action :authenticate_request
+  skip_before_action :authenticate_request,
+                     :email_verified?,
+                     only: [:create_patient]
   before_action :set_user, only: %i[show destroy]
 
   def index
@@ -15,13 +17,12 @@ class Api::V1::UsersController < ApplicationController
     @user = User.new(user_params)
 
     if @user.save
-      payload = { user_id: @user.id }
+      payload = { user_email: @user.email }
       email_token = JsonWebToken.encode(payload, 7.days.from_now)
       render json: {
                user: @user,
                email_token: email_token,
-               message:
-                 'A confirmation email has been sent to verify your account!'
+               message: 'A confirmation email has been sent!'
              },
              status: :created
     else
