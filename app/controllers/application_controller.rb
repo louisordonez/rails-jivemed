@@ -5,6 +5,18 @@ class ApplicationController < ActionController::API
 
   private
 
+  def admin_role
+    Role.find_by(name: 'admin')
+  end
+
+  def patient_role
+    Role.find_by(name: 'patient')
+  end
+
+  def doctor_role
+    Role.find_by(name: 'doctor')
+  end
+
   def email_verified?
     if !@current_user.email_verified
       render json: {
