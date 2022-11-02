@@ -1,5 +1,25 @@
 class Api::V1::AuthenticationController < ApplicationController
-  skip_before_action :authenticate_request, :email_verified?
+  skip_before_action :authenticate_request, except: [:request_email_token]
+  skip_before_action :email_verified?
+
+  def request_email_token
+    if @current_user.email_verified
+      render json: {
+               errors: {
+                 messages: ['Your email has already been verified.']
+               }
+             },
+             status: :accepted
+    else
+      payload = { user_email: @current_user.email }
+      new_email_token = JsonWebToken.encode(payload, 24.hours.from_now)
+      render json: {
+               email_token: new_email_token,
+               messages: ['A confirmation email has been sent!']
+             },
+             status: :ok
+    end
+  end
 
   def verify_email
     email_token = params[:email_token]
