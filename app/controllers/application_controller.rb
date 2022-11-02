@@ -8,8 +8,8 @@ class ApplicationController < ActionController::API
   def email_verified?
     if !@current_user.email_verified
       render json: {
-               error: {
-                 message: 'Email needs to be verified to continue.'
+               errors: {
+                 messages: ['Email needs to be verified to continue.']
                }
              },
              status: :forbidden

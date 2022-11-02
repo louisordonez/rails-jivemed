@@ -22,7 +22,7 @@ class Api::V1::UsersController < ApplicationController
       render json: {
                user: @user,
                email_token: email_token,
-               message: 'A confirmation email has been sent!'
+               messages: ['A confirmation email has been sent!']
              },
              status: :created
     else
