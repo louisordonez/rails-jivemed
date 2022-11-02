@@ -78,6 +78,10 @@ GEM
     erubi (1.11.0)
     globalid (1.0.0)
       activesupport (>= 5.0)
+    haml (6.0.8)
+      temple (>= 0.8.2)
+      thor
+      tilt
     i18n (1.12.0)
       concurrent-ruby (~> 1.0)
     io-console (0.5.11)
@@ -103,9 +107,16 @@ GEM
     net-smtp (0.3.2)
       net-protocol
     nio4r (2.5.8)
+    nokogiri (1.13.9-arm64-darwin)
+      racc (~> 1.4)
     nokogiri (1.13.9-x86_64-darwin)
       racc (~> 1.4)
     pg (1.4.4)
+    prettier (3.2.2)
+      syntax_tree (>= 2.7.1)
+      syntax_tree-haml (>= 1.1.0)
+      syntax_tree-rbs (>= 0.2.0)
+    prettier_print (1.0.2)
     puma (5.6.5)
       nio4r (~> 2.0)
     racc (1.6.0)
@@ -139,9 +150,22 @@ GEM
       thor (~> 1.0)
       zeitwerk (~> 2.5)
     rake (13.0.6)
+    rbs (2.7.0)
     reline (0.3.1)
       io-console (~> 0.5)
+    syntax_tree (4.3.0)
+      prettier_print (>= 1.0.2)
+    syntax_tree-haml (2.0.0)
+      haml (>= 5.2, != 6.0.0)
+      prettier_print (>= 1.0.0)
+      syntax_tree (>= 4.0.0)
+    syntax_tree-rbs (0.5.1)
+      prettier_print
+      rbs
+      syntax_tree (>= 2.0.1)
+    temple (0.9.1)
     thor (1.2.1)
+    tilt (2.0.11)
     timeout (0.3.0)
     tzinfo (2.0.5)
       concurrent-ruby (~> 1.0)
@@ -151,6 +175,7 @@ GEM
     zeitwerk (2.6.1)
 
 PLATFORMS
+  arm64-darwin-22
   x86_64-darwin-20
 
 DEPENDENCIES
@@ -159,6 +184,7 @@ DEPENDENCIES
   debug
   jwt
   pg (~> 1.1)
+  prettier
   puma (~> 5.0)
   rails (~> 7.0.4)
   tzinfo-data
