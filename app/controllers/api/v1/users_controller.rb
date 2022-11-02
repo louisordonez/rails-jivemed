@@ -52,7 +52,7 @@ class Api::V1::UsersController < ApplicationController
     rescue ActiveRecord::RecordNotFound
       render json: {
                errors: {
-                 messages: ['User not found']
+                 messages: ['Record not found.']
                }
              },
              status: :not_found

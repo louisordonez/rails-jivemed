@@ -6,10 +6,10 @@ class ApplicationController < ActionController::API
   private
 
   def authenticate_request
-    header = request.headers['Authorization']
+    authorization = request.headers['Authorization']
 
-    if header
-      access_token = header.split(' ').last if header
+    if authorization
+      access_token = authorization.split(' ').last
       begin
         decoded = JsonWebToken.decode(access_token)
         @current_user = User.find(decoded[:user_id])
@@ -23,7 +23,7 @@ class ApplicationController < ActionController::API
       rescue JWT::ExpiredSignature
         render json: {
                  errors: {
-                   messages: ['Session has expired. Sign in to continue.']
+                   messages: ['Token has expired. Sign in to continue.']
                  }
                },
                status: :unauthorized
@@ -38,7 +38,7 @@ class ApplicationController < ActionController::API
     else
       render json: {
                errors: {
-                 messages: ['Please sign in to continue.']
+                 messages: ['Sign in to continue.']
                }
              },
              status: :forbidden
