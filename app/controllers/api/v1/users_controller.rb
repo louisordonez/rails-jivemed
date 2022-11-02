@@ -13,6 +13,10 @@ class Api::V1::UsersController < ApplicationController
     render json: @users, status: :ok
   end
 
+  def show_current_user
+    render json: @current_user, status: :ok
+  end
+
   def show_user
     render json: @user, status: :ok
   end

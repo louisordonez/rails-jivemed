@@ -11,6 +11,7 @@ Rails.application.routes.draw do
       get '/users/show/:id', to: 'users#show_user'
 
       # Users - Patients
+      get '/users/show', to: 'users#show_current_user'
       post '/users/patients', to: 'users#create_patient'
     end
   end
