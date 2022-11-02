@@ -18,7 +18,7 @@ class Api::V1::UsersController < ApplicationController
 
     if @user.save
       payload = { user_email: @user.email }
-      email_token = JsonWebToken.encode(payload, 7.days.from_now)
+      email_token = JsonWebToken.encode(payload, 24.hours.from_now)
       render json: {
                user: @user,
                email_token: email_token,
