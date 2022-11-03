@@ -10,18 +10,6 @@ class Api::V1::UsersController < ApplicationController
     render json: @users, status: :ok
   end
 
-  def show_current_user
-    render json: @current_user, status: :ok
-  end
-
-  def destroy_current_user
-    @current_user.destroy
-    render json: {
-             messages: ['Your account has been successfully deleted!']
-           },
-           status: :ok
-  end
-
   def show_user
     render json: @user, status: :ok
   end
@@ -64,6 +52,18 @@ class Api::V1::UsersController < ApplicationController
              },
              status: :forbidden
     end
+  end
+
+  def show_current_user
+    render json: @current_user, status: :ok
+  end
+
+  def destroy_current_user
+    @current_user.destroy
+    render json: {
+             messages: ['Your account has been successfully deleted!']
+           },
+           status: :ok
   end
 
   private
