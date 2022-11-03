@@ -8,6 +8,7 @@ Rails.application.routes.draw do
 
       # Admin
       get '/users/show', to: 'users#show_users'
+      get '/users/patients', to: 'users#show_patients'
       get '/users/show/:id', to: 'users#show_user'
       delete '/users/destroy/:id', to: 'users#destroy_user'
 
@@ -15,8 +16,6 @@ Rails.application.routes.draw do
       post '/users/patient', to: 'users#create_patient'
       get '/users/patient/show', to: 'users#show_current_user'
       delete '/users/patient/destroy', to: 'users#destroy_current_user'
-
-      # Doctors
       get '/users/doctors', to: 'users#show_doctors'
     end
   end

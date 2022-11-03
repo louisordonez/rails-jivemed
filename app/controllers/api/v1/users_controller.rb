@@ -3,6 +3,7 @@ class Api::V1::UsersController < ApplicationController
                      :is_email_verified?,
                      only: [:create_patient]
   before_action :restrict_user, only: %i[show_users show_user]
+  before_action :restrict_patient, only: [:show_patients]
   before_action :set_user, only: %i[show_user destroy_user]
 
   def show_users
@@ -12,6 +13,11 @@ class Api::V1::UsersController < ApplicationController
 
   def show_doctors
     @users = User.all.each.select { |user| user.roles.first == doctor_role }
+    render json: @users, status: :ok
+  end
+
+  def show_patients
+    @users = User.all.each.select { |user| user.roles.first == patient_role }
     render json: @users, status: :ok
   end
 

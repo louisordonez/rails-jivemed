@@ -1,7 +1,7 @@
 class ApplicationController < ActionController::API
   include JsonWebToken
 
-  before_action :authenticate_request, :email_verified?
+  before_action :authenticate_request, :is_email_verified?
 
   private
 
@@ -21,8 +21,23 @@ class ApplicationController < ActionController::API
     user.roles.first == admin_role ? true : false
   end
 
+  def is_patient_role?(user)
+    user.roles.first == patient_role ? true : false
+  end
+
   def restrict_user
     if (!is_admin_role?(@current_user))
+      render json: {
+               errors: {
+                 messages: ['Request forbidden.']
+               }
+             },
+             status: :forbidden
+    end
+  end
+
+  def restrict_patient
+    if (is_patient_role?(@current_user))
       render json: {
                errors: {
                  messages: ['Request forbidden.']
