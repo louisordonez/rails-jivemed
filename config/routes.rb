@@ -7,9 +7,9 @@ Rails.application.routes.draw do
       post '/auth/sign_in', to: 'authentication#sign_in'
 
       # Users - Admin
-      get '/users/all', to: 'users#index'
+      get '/users/show', to: 'users#show_users'
       get '/users/show/:id', to: 'users#show_user'
-      delete '/users/:id', to: 'users#destroy_user'
+      delete '/users/destroy/:id', to: 'users#destroy_user'
 
       # Users - Patients
       get '/users/show', to: 'users#show_current_user'

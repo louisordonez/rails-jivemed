@@ -5,7 +5,7 @@ class Api::V1::UsersController < ApplicationController
   before_action :restrict_user, only: %i[index show_user]
   before_action :set_user, only: %i[show_user destroy_user]
 
-  def index
+  def show_users
     @users =
       User.all.select do |user|
         (user.roles.first == patient_role || user.roles.first == doctor_role)
