@@ -5,30 +5,34 @@ class ApplicationController < ActionController::API
 
   private
 
-  def restrict_user
-    if (
-         @current_user.roles.first == patient_role ||
-           @current_user.roles.first == doctor_role
-       )
-      render json: {
-               error: {
-                 message: 'Request forbidden.'
-               }
-             },
-             status: :forbidden
-    end
-  end
-
   def admin_role
     Role.find_by(name: 'admin')
+  end
+
+  def doctor_role
+    Role.find_by(name: 'doctor')
   end
 
   def patient_role
     Role.find_by(name: 'patient')
   end
 
-  def doctor_role
-    Role.find_by(name: 'doctor')
+  def check_user_role(user)
+    user.roles.each do |role|
+      return true if role == doctor_role || role == patient_role
+    end
+    false
+  end
+
+  def restrict_user
+    if (check_user_role(@current_user))
+      render json: {
+               errors: {
+                 messages: ['Request forbidden.']
+               }
+             },
+             status: :forbidden
+    end
   end
 
   def email_verified?

@@ -3,7 +3,7 @@ class Api::V1::UsersController < ApplicationController
                      :email_verified?,
                      only: [:create_patient]
   before_action :restrict_user, only: %i[index show_user]
-  before_action :set_user, only: [:show_user]
+  before_action :set_user, only: %i[show_user destroy_user]
 
   def index
     @users =
@@ -29,8 +29,8 @@ class Api::V1::UsersController < ApplicationController
       email_token = JsonWebToken.encode(payload, 24.hours.from_now)
       render json: {
                user: @user,
-               email_token: email_token,
-               messages: ['A confirmation email has been sent!']
+               messages: ['A confirmation email has been sent!'],
+               email_token: email_token
              },
              status: :created
     else
@@ -40,6 +40,24 @@ class Api::V1::UsersController < ApplicationController
                }
              },
              status: :unprocessable_entity
+    end
+  end
+
+  def destroy_user
+    if (check_user_role(@user))
+      @user.destroy
+      render json: {
+               user: @user,
+               messages: ['User has been successfully deleted!']
+             },
+             status: :ok
+    else
+      render json: {
+               errors: {
+                 messages: ['Cannot delete admin account.']
+               }
+             },
+             status: :forbidden
     end
   end
 

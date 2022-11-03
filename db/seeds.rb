@@ -6,7 +6,7 @@
 #   movies = Movie.create([{ name: "Star Wars" }, { name: "Lord of the Rings" }])
 #   Character.create(name: "Luke", movie: movies.first)
 
-roles = %w[admin patient doctor]
+roles = %w[admin doctor patient]
 roles.each { |role| Role.create(name: role) }
 
 admin =
@@ -19,16 +19,6 @@ admin =
 admin.roles << Role.find_by(name: 'admin')
 admin.update(email_verified: true)
 
-patient =
-  User.create!(
-    first_name: 'Juan',
-    last_name: 'Dela Cruz',
-    email: 'jdc@email.com',
-    password: "#{Rails.application.credentials.users.patient_password}"
-  )
-patient.roles << Role.find_by(name: 'patient')
-patient.update(email_verified: true)
-
 doctor =
   User.create!(
     first_name: 'Maria',
@@ -38,3 +28,13 @@ doctor =
   )
 doctor.roles << Role.find_by(name: 'doctor')
 doctor.update(email_verified: true)
+
+patient =
+  User.create!(
+    first_name: 'Juan',
+    last_name: 'Dela Cruz',
+    email: 'jdc@email.com',
+    password: "#{Rails.application.credentials.users.patient_password}"
+  )
+patient.roles << Role.find_by(name: 'patient')
+patient.update(email_verified: true)

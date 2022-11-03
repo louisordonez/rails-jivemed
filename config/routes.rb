@@ -9,6 +9,7 @@ Rails.application.routes.draw do
       # Users - Admin
       get '/users/all', to: 'users#index'
       get '/users/show/:id', to: 'users#show_user'
+      delete '/users/:id', to: 'users#destroy_user'
 
       # Users - Patients
       get '/users/show', to: 'users#show_current_user'
