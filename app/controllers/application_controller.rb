@@ -32,7 +32,7 @@ class ApplicationController < ActionController::API
     end
   end
 
-  def email_verified?
+  def is_email_verified?
     if !@current_user.email_verified
       render json: {
                errors: {
