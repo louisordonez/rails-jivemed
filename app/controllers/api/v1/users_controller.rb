@@ -42,20 +42,20 @@ class Api::V1::UsersController < ApplicationController
   end
 
   def destroy_user
-    if (not_admin_role?(@user))
-      @user.destroy
-      render json: {
-               user: @user,
-               messages: ['User has been successfully deleted!']
-             },
-             status: :ok
-    else
+    if (is_admin_role?(@user))
       render json: {
                errors: {
                  messages: ['Cannot delete admin account.']
                }
              },
              status: :forbidden
+    else
+      @user.destroy
+      render json: {
+               user: @user,
+               messages: ['User has been successfully deleted!']
+             },
+             status: :ok
     end
   end
 

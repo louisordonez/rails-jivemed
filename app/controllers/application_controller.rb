@@ -17,12 +17,12 @@ class ApplicationController < ActionController::API
     Role.find_by(name: 'patient')
   end
 
-  def not_admin_role?(user)
-    user.roles.first != admin_role ? true : false
+  def is_admin_role?(user)
+    user.roles.first == admin_role ? true : false
   end
 
   def restrict_user
-    if (not_admin_role?(@current_user))
+    if (!is_admin_role?(@current_user))
       render json: {
                errors: {
                  messages: ['Request forbidden.']
