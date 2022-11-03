@@ -18,8 +18,7 @@ class ApplicationController < ActionController::API
   end
 
   def not_admin_role?(user)
-    user.roles.each { |role| return false if role == admin_role }
-    true
+    user.roles.first != admin_role ? true : false
   end
 
   def restrict_user

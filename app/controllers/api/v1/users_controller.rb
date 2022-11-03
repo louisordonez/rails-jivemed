@@ -2,7 +2,7 @@ class Api::V1::UsersController < ApplicationController
   skip_before_action :authenticate_request,
                      :email_verified?,
                      only: [:create_patient]
-  before_action :restrict_user, only: %i[index show_user]
+  before_action :restrict_user, only: %i[show_users show_user]
   before_action :set_user, only: %i[show_user destroy_user]
 
   def show_users
