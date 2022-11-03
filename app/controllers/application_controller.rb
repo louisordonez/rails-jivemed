@@ -18,10 +18,8 @@ class ApplicationController < ActionController::API
   end
 
   def check_user_role(user)
-    user.roles.each do |role|
-      return true if role == doctor_role || role == patient_role
-    end
-    false
+    user.roles.each { |role| return false if role == admin_role }
+    true
   end
 
   def restrict_user
