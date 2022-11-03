@@ -44,7 +44,7 @@ class Api::V1::UsersController < ApplicationController
   end
 
   def destroy_user
-    if (check_user_role(@user))
+    if (not_admin_role?(@user))
       @user.destroy
       render json: {
                user: @user,
