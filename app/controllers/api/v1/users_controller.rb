@@ -7,18 +7,18 @@ class Api::V1::UsersController < ApplicationController
   before_action :set_user, only: %i[user destroy_user]
 
   def users
-    @users = User.all.each.select { |user| user.roles.first != admin_role }
-    render json: @users, status: :ok
+    users = User.all.each.select { |user| user.roles.first != admin_role }
+    render json: users, status: :ok
   end
 
   def doctors
-    @users = User.all.each.select { |user| user.roles.first == doctor_role }
-    render json: @users, status: :ok
+    doctors = User.all.each.select { |user| user.roles.first == doctor_role }
+    render json: doctors, status: :ok
   end
 
   def patients
-    @users = User.all.each.select { |user| user.roles.first == patient_role }
-    render json: @users, status: :ok
+    patients = User.all.each.select { |user| user.roles.first == patient_role }
+    render json: patients, status: :ok
   end
 
   def user
