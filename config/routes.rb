@@ -7,16 +7,16 @@ Rails.application.routes.draw do
       get '/auth/request', to: 'authentication#request_email_token'
 
       # Admin
-      get '/users/show', to: 'users#show_users'
-      get '/users/patients', to: 'users#show_patients'
-      get '/users/show/:id', to: 'users#show_user'
+      get '/users/show', to: 'users#users'
+      get '/users/patients', to: 'users#patients'
+      get '/users/show/:id', to: 'users#user'
       delete '/users/destroy/:id', to: 'users#destroy_user'
 
       # Patients
       post '/users/patient', to: 'users#create_patient'
-      get '/users/patient/show', to: 'users#show_current_user'
+      get '/users/patient/show', to: 'users#current_user'
       delete '/users/patient/destroy', to: 'users#destroy_current_user'
-      get '/users/doctors', to: 'users#show_doctors'
+      get '/users/doctors', to: 'users#doctors'
     end
   end
 end

@@ -2,26 +2,26 @@ class Api::V1::UsersController < ApplicationController
   skip_before_action :authenticate_request,
                      :is_email_verified?,
                      only: [:create_patient]
-  before_action :restrict_user, only: %i[show_users show_user]
-  before_action :restrict_patient, only: [:show_patients]
-  before_action :set_user, only: %i[show_user destroy_user]
+  before_action :restrict_user, only: %i[users user]
+  before_action :restrict_patient, only: [:patients]
+  before_action :set_user, only: %i[user destroy_user]
 
-  def show_users
+  def users
     @users = User.all.each.select { |user| user.roles.first != admin_role }
     render json: @users, status: :ok
   end
 
-  def show_doctors
+  def doctors
     @users = User.all.each.select { |user| user.roles.first == doctor_role }
     render json: @users, status: :ok
   end
 
-  def show_patients
+  def patients
     @users = User.all.each.select { |user| user.roles.first == patient_role }
     render json: @users, status: :ok
   end
 
-  def show_user
+  def user
     render json: @user, status: :ok
   end
 
@@ -65,7 +65,7 @@ class Api::V1::UsersController < ApplicationController
     end
   end
 
-  def show_current_user
+  def current_user
     render json: @current_user, status: :ok
   end
 
