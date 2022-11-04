@@ -1,23 +1,27 @@
 class Api::V1::UsersController < ApplicationController
   skip_before_action :authenticate_request,
-                     :email_verified?,
+                     :is_email_verified?,
                      only: [:create_patient]
-  before_action :restrict_user, only: %i[index show_user]
-  before_action :set_user, only: [:show_user]
+  before_action :restrict_user, only: %i[users user]
+  before_action :restrict_patient, only: [:patients]
+  before_action :set_user, only: %i[user destroy_user]
 
-  def index
-    @users =
-      User.all.select do |user|
-        (user.roles.first == patient_role || user.roles.first == doctor_role)
-      end
-    render json: @users, status: :ok
+  def users
+    users = User.all.each.select { |user| user.roles.first != admin_role }
+    render json: users, status: :ok
   end
 
-  def show_current_user
-    render json: @current_user, status: :ok
+  def doctors
+    doctors = User.all.each.select { |user| user.roles.first == doctor_role }
+    render json: doctors, status: :ok
   end
 
-  def show_user
+  def patients
+    patients = User.all.each.select { |user| user.roles.first == patient_role }
+    render json: patients, status: :ok
+  end
+
+  def user
     render json: @user, status: :ok
   end
 
@@ -29,8 +33,8 @@ class Api::V1::UsersController < ApplicationController
       email_token = JsonWebToken.encode(payload, 24.hours.from_now)
       render json: {
                user: @user,
-               email_token: email_token,
-               messages: ['A confirmation email has been sent!']
+               messages: ['A confirmation email has been sent!'],
+               email_token: email_token
              },
              status: :created
     else
@@ -41,6 +45,36 @@ class Api::V1::UsersController < ApplicationController
              },
              status: :unprocessable_entity
     end
+  end
+
+  def destroy_user
+    if (is_admin_role?(@user))
+      render json: {
+               errors: {
+                 messages: ['Cannot delete admin account.']
+               }
+             },
+             status: :forbidden
+    else
+      @user.destroy
+      render json: {
+               user: @user,
+               messages: ['User has been successfully deleted!']
+             },
+             status: :ok
+    end
+  end
+
+  def current_user
+    render json: @current_user, status: :ok
+  end
+
+  def destroy_current_user
+    @current_user.destroy
+    render json: {
+             messages: ['Your account has been successfully deleted!']
+           },
+           status: :ok
   end
 
   private
