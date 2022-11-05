@@ -92,16 +92,14 @@ class Api::V1::UsersController < ApplicationController
   private
 
   def set_user
-    begin
-      @user = User.find(params[:id])
-    rescue ActiveRecord::RecordNotFound
-      render json: {
-               errors: {
-                 messages: ['Record not found.']
-               }
-             },
-             status: :not_found
-    end
+    @user = User.find(params[:id])
+  rescue ActiveRecord::RecordNotFound
+    render json: {
+             errors: {
+               messages: ['Record not found.']
+             }
+           },
+           status: :not_found
   end
 
   def user_params
