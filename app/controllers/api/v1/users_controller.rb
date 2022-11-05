@@ -107,6 +107,23 @@ class Api::V1::UsersController < ApplicationController
     render json: @current_user, status: :ok
   end
 
+  def update_current_user
+    if @current_user.update(user_params)
+      render json: {
+               user: @current_user,
+               messages: ['Your account has been successfully updated!']
+             },
+             status: :ok
+    else
+      render json: {
+               errors: {
+                 messages: @current_user.errors.full_messages
+               }
+             },
+             status: :unprocessable_entity
+    end
+  end
+
   def destroy_current_user
     @current_user.destroy
     render json: {

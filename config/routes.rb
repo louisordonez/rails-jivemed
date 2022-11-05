@@ -16,6 +16,7 @@ Rails.application.routes.draw do
       # Patients
       post '/users/patient', to: 'users#create_patient'
       get '/users/patient/show', to: 'users#current_user'
+      patch '/users/patient/update', to: 'users#update_current_user'
       delete '/users/patient/destroy', to: 'users#destroy_current_user'
       get '/users/doctors', to: 'users#doctors'
     end
