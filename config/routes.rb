@@ -10,6 +10,7 @@ Rails.application.routes.draw do
       get '/users/show', to: 'users#users'
       get '/users/patients', to: 'users#patients'
       get '/users/show/:id', to: 'users#user'
+      patch '/users/update/:id', to: 'users#update_user'
       delete '/users/destroy/:id', to: 'users#destroy_user'
 
       # Patients

@@ -4,7 +4,7 @@ class Api::V1::UsersController < ApplicationController
                      only: [:create_patient]
   before_action :restrict_user, only: %i[users user]
   before_action :restrict_patient, only: [:patients]
-  before_action :set_user, only: %i[user destroy_user]
+  before_action :set_user, only: %i[user update_user destroy_user]
 
   def users
     users =
@@ -59,6 +59,32 @@ class Api::V1::UsersController < ApplicationController
     end
   end
 
+  def update_user
+    if (is_admin_role?(@user))
+      render json: {
+               errors: {
+                 messages: ['Cannot update admin account.']
+               }
+             },
+             status: :forbidden
+    else
+      if @user.update(user_update_params)
+        render json: {
+                 user: @user,
+                 messages: ['User has been successfully updated!']
+               },
+               status: :ok
+      else
+        render json: {
+                 errors: {
+                   messages: @user.errors.full_messages
+                 }
+               },
+               status: :unprocessable_entity
+      end
+    end
+  end
+
   def destroy_user
     if (is_admin_role?(@user))
       render json: {
@@ -104,5 +130,9 @@ class Api::V1::UsersController < ApplicationController
 
   def user_params
     params.permit(:first_name, :last_name, :email, :password)
+  end
+
+  def user_update_params
+    params.permit(:first_name, :last_name, :email)
   end
 end
