@@ -4,20 +4,32 @@ class Api::V1::UsersController < ApplicationController
                      only: [:create_patient]
   before_action :restrict_user, only: %i[users user]
   before_action :restrict_patient, only: [:patients]
-  before_action :set_user, only: %i[user destroy_user]
+  before_action :set_user, only: %i[user update_user destroy_user]
 
   def users
-    users = User.all.each.select { |user| user.roles.first != admin_role }
+    users =
+      User
+        .all
+        .select { |user| user.roles.first != admin_role }
+        .map { |user| { user: user, role: user.roles.first } }
     render json: users, status: :ok
   end
 
   def doctors
-    doctors = User.all.each.select { |user| user.roles.first == doctor_role }
+    doctors =
+      User
+        .all
+        .select { |user| user.roles.first == doctor_role }
+        .map { |user| { user: user, role: user.roles.first } }
     render json: doctors, status: :ok
   end
 
   def patients
-    patients = User.all.each.select { |user| user.roles.first == patient_role }
+    patients =
+      User
+        .all
+        .select { |user| user.roles.first == patient_role }
+        .map { |user| { user: user, role: user.roles.first } }
     render json: patients, status: :ok
   end
 
@@ -47,6 +59,32 @@ class Api::V1::UsersController < ApplicationController
     end
   end
 
+  def update_user
+    if (is_admin_role?(@user))
+      render json: {
+               errors: {
+                 messages: ['Cannot update admin account.']
+               }
+             },
+             status: :forbidden
+    else
+      if @user.update(user_update_params)
+        render json: {
+                 user: @user,
+                 messages: ['User has been successfully updated!']
+               },
+               status: :ok
+      else
+        render json: {
+                 errors: {
+                   messages: @user.errors.full_messages
+                 }
+               },
+               status: :unprocessable_entity
+      end
+    end
+  end
+
   def destroy_user
     if (is_admin_role?(@user))
       render json: {
@@ -69,6 +107,23 @@ class Api::V1::UsersController < ApplicationController
     render json: @current_user, status: :ok
   end
 
+  def update_current_user
+    if @current_user.update(user_params)
+      render json: {
+               user: @current_user,
+               messages: ['Your account has been successfully updated!']
+             },
+             status: :ok
+    else
+      render json: {
+               errors: {
+                 messages: @current_user.errors.full_messages
+               }
+             },
+             status: :unprocessable_entity
+    end
+  end
+
   def destroy_current_user
     @current_user.destroy
     render json: {
@@ -80,19 +135,21 @@ class Api::V1::UsersController < ApplicationController
   private
 
   def set_user
-    begin
-      @user = User.find(params[:id])
-    rescue ActiveRecord::RecordNotFound
-      render json: {
-               errors: {
-                 messages: ['Record not found.']
-               }
-             },
-             status: :not_found
-    end
+    @user = User.find(params[:id])
+  rescue ActiveRecord::RecordNotFound
+    render json: {
+             errors: {
+               messages: ['Record not found.']
+             }
+           },
+           status: :not_found
   end
 
   def user_params
     params.permit(:first_name, :last_name, :email, :password)
+  end
+
+  def user_update_params
+    params.permit(:first_name, :last_name, :email)
   end
 end
