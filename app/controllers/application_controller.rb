@@ -60,8 +60,10 @@ class ApplicationController < ActionController::API
 
   def authenticate_request
     authorization = request.headers['Authorization']
+
     if authorization
       access_token = authorization.split(' ').last
+
       begin
         decoded = JsonWebToken.decode(access_token)
         @current_user = User.find(decoded[:user_id])

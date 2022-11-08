@@ -13,6 +13,7 @@ class Api::V1::AuthenticationController < ApplicationController
     else
       payload = { user_email: @current_user.email }
       new_email_token = JsonWebToken.encode(payload, 24.hours.from_now)
+
       render json: {
                messages: ['A confirmation email has been sent!'],
                email_token: new_email_token
@@ -23,9 +24,11 @@ class Api::V1::AuthenticationController < ApplicationController
 
   def verify_email
     email_token = params[:email_token]
+
     begin
       decoded = JsonWebToken.decode(email_token)
       @user = User.find_by_email(decoded[:user_email])
+
       raise ActiveRecord::RecordNotFound if !@user
     rescue ActiveRecord::RecordNotFound
       render json: {
@@ -60,6 +63,7 @@ class Api::V1::AuthenticationController < ApplicationController
                status: :accepted
       else
         @user.update(email_verified: true)
+
         render json: {
                  user: @user,
                  messages: ['Your email has been successfully verified!']
@@ -71,10 +75,12 @@ class Api::V1::AuthenticationController < ApplicationController
 
   def sign_in
     @user = User.find_by_email(params[:email])
+
     if (@user&.authenticate(params[:password]))
       payload = { user_id: @user.id }
       access_token_expiration = 7.days.from_now.to_i
       access_token = JsonWebToken.encode(payload, access_token_expiration)
+
       render json: {
                user: @user,
                access_token: access_token,

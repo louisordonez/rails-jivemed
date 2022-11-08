@@ -12,6 +12,7 @@ class Api::V1::UsersController < ApplicationController
         .all
         .select { |user| user.roles.first != admin_role }
         .map { |user| { user: user, role: user.roles.first } }
+
     render json: users, status: :ok
   end
 
@@ -21,6 +22,7 @@ class Api::V1::UsersController < ApplicationController
         .all
         .select { |user| user.roles.first == doctor_role }
         .map { |user| { user: user, role: user.roles.first } }
+
     render json: doctors, status: :ok
   end
 
@@ -30,6 +32,7 @@ class Api::V1::UsersController < ApplicationController
         .all
         .select { |user| user.roles.first == patient_role }
         .map { |user| { user: user, role: user.roles.first } }
+
     render json: patients, status: :ok
   end
 
@@ -39,10 +42,13 @@ class Api::V1::UsersController < ApplicationController
 
   def create_patient
     @user = User.new(user_params)
+
     if @user.save
       @user.roles << patient_role
+
       payload = { user_email: @user.email }
       email_token = JsonWebToken.encode(payload, 24.hours.from_now)
+
       render json: {
                user: @user,
                messages: ['A confirmation email has been sent!'],
@@ -95,6 +101,7 @@ class Api::V1::UsersController < ApplicationController
              status: :forbidden
     else
       @user.destroy
+
       render json: {
                user: @user,
                messages: ['User has been successfully deleted!']
@@ -126,6 +133,7 @@ class Api::V1::UsersController < ApplicationController
 
   def destroy_current_user
     @current_user.destroy
+
     render json: {
              messages: ['Your account has been successfully deleted!']
            },
