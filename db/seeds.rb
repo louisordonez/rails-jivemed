@@ -33,7 +33,7 @@ patient =
 patient.roles << Role.find_by(name: 'patient')
 patient.update(email_verified: true)
 
-schedule = Schedule.create!(doctor_id: 2, date: Date.new(2022, 2, 02)) #YYYY-MM-DD
+schedule = Schedule.create!(doctor_id: 2, date: Date.new(2022, 02, 02)) #YYYY-MM-DD
 
 appointment = Appointment.create!(schedule_id: 1, user_id: 3)
 
