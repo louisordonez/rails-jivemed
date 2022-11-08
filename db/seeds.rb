@@ -26,7 +26,7 @@ doctor =
 doctor.update(email_verified: true)
 doctor.roles << Role.find_by(name: 'doctor')
 doctor.departments << Department.find_by(name: 'Pediatrics')
-doctor.fees << Fee.create(amount: 1000.00)
+doctor.fees << Fee.create!(amount: 1000.00)
 
 patient =
   User.create!(
