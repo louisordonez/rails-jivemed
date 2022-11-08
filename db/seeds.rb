@@ -1,10 +1,4 @@
-# This file should contain all the record creation needed to seed the database with its default values.
-# The data can then be loaded with the bin/rails db:seed command (or created alongside the database with db:setup).
-#
-# Examples:
-#
-#   movies = Movie.create([{ name: "Star Wars" }, { name: "Lord of the Rings" }])
-#   Character.create(name: "Luke", movie: movies.first)
+require 'date'
 
 roles = %w[admin doctor patient]
 roles.each { |role| Role.create(name: role) }
@@ -38,3 +32,9 @@ patient =
   )
 patient.roles << Role.find_by(name: 'patient')
 patient.update(email_verified: true)
+
+schedule = Schedule.create!(doctor_id: 2, date: Date.new(2022, 2, 02)) #YYYY-MM-DD
+
+appointment = Appointment.create!(schedule_id: 1, user_id: 3)
+
+transaction = Transaction.create!(appointment_id: 1)
