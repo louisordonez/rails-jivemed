@@ -3,6 +3,9 @@ require 'date'
 roles = %w[admin doctor patient]
 roles.each { |role| Role.create(name: role) }
 
+department = %w[Pediatrics Psychiatry Orthodontics]
+department.each { |department| Department.create(name: department) }
+
 admin =
   User.create!(
     first_name: 'Jivemed Admin',
@@ -21,6 +24,7 @@ doctor =
     password: "#{Rails.application.credentials.users.doctor_password}"
   )
 doctor.roles << Role.find_by(name: 'doctor')
+doctor.departments << Department.find_by(name: 'Pediatrics')
 doctor.update(email_verified: true)
 
 patient =
