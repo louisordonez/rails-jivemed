@@ -5,7 +5,7 @@ class Payment < ApplicationRecord
                 :credit_card_cvv
 
   belongs_to :appointment
-  belongs_validation :create_on_stripe
+  before_validation :create_on_stripe
 
   def create_on_stripe
     token = get_token
