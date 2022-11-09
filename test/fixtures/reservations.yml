@@ -1,9 +1,0 @@
-one:
-  amount: 1
-  payment_method: 1
-  user: one
-
-two:
-  amount: 1
-  payment_method: 1
-  user: two

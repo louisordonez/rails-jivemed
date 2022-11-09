@@ -1,7 +1,0 @@
-one:
-  reservation: one
-  stripe_id: MyString
-
-two:
-  reservation: two
-  stripe_id: MyString
