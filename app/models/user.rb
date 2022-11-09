@@ -22,7 +22,7 @@ class User < ApplicationRecord
 
   def create_on_stripe
     params = { email: email, name: "#{first_name} #{last_name}" }
-    response = Stripe::User.create(params)
+    response = Stripe::Customer.create(params)
 
     self.stripe_id = response.id
   end
