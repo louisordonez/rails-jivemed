@@ -53,3 +53,7 @@ gem 'rack-cors'
 gem 'jwt'
 
 gem 'bcrypt'
+
+gem 'prettier'
+
+gem 'stripe'
