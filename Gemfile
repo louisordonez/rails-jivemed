@@ -46,6 +46,10 @@ group :development do
   # gem "spring"
 end
 
+gem 'prettier'
+
+gem 'rack-cors'
+
 gem 'jwt'
 
 gem 'bcrypt'
