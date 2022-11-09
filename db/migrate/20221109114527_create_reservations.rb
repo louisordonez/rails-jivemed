@@ -1,6 +1,6 @@
-class CreateAppointments < ActiveRecord::Migration[7.0]
+class CreateReservations < ActiveRecord::Migration[7.0]
   def change
-    create_table :appointments do |t|
+    create_table :reservations do |t|
       t.integer :amount
       t.integer :payment_method
       t.references :user, null: false, foreign_key: true

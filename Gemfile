@@ -54,6 +54,4 @@ gem 'jwt'
 
 gem 'bcrypt'
 
-gem 'prettier'
-
 gem 'stripe'
