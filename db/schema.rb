@@ -10,16 +10,13 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_11_09_140209) do
+ActiveRecord::Schema[7.0].define(version: 2022_11_09_152739) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "appointments", force: :cascade do |t|
-    t.bigint "user_id", null: false
-    t.integer "amount"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["user_id"], name: "index_appointments_on_user_id"
   end
 
   create_table "roles", force: :cascade do |t|
@@ -33,6 +30,15 @@ ActiveRecord::Schema[7.0].define(version: 2022_11_09_140209) do
     t.bigint "role_id", null: false
   end
 
+  create_table "transactions", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.string "stripe_id"
+    t.decimal "amount", precision: 10, scale: 2
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_transactions_on_user_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "stripe_id"
     t.string "first_name"
@@ -44,5 +50,5 @@ ActiveRecord::Schema[7.0].define(version: 2022_11_09_140209) do
     t.datetime "updated_at", null: false
   end
 
-  add_foreign_key "appointments", "users"
+  add_foreign_key "transactions", "users"
 end
