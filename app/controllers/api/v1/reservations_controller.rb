@@ -1,17 +1,17 @@
-class Api::V1::AppointmentsController < ApplicationController
+class Api::V1::ReservationsController < ApplicationController
   def create
-    @appointment =
-      Appointment.new(
-        appointment_params.merge(
+    @reservation =
+      Reservation.new(
+        reservation_params.merge(
           amount: rand(1000..10_000),
           payment_method: 'credit_card'
         )
       )
 
-    if @appointment.save
+    if @reservation.save
       render json: {
-               appointment: @appointment,
-               payment: @appointment.payment
+               reservation: @reservation,
+               payment: @reservation.payment
              },
              status: :created
     else
@@ -21,7 +21,7 @@ class Api::V1::AppointmentsController < ApplicationController
 
   private
 
-  def appointment_params
+  def reservation_params
     params.require(:data).permit(
       :user_id,
       :credit_card_number,

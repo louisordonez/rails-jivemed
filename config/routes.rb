@@ -21,7 +21,7 @@ Rails.application.routes.draw do
       delete '/users/patient/destroy', to: 'users#destroy_current_user'
 
       # Payment
-      post :appointments, to: 'appointments#create'
+      post :reservations, to: 'reservations#create'
     end
   end
 end

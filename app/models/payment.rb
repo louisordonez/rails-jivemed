@@ -4,12 +4,12 @@ class Payment < ApplicationRecord
                 :credit_card_exp_year,
                 :credit_card_cvv
 
-  belongs_to :appointment
+  belongs_to :reservation
   before_validation :create_on_stripe
 
   def create_on_stripe
     token = get_token
-    params = { amount: appointment.amount, currency: 'usd', source: token }
+    params = { amount: reservation.amount, currency: 'usd', source: token }
     response = Stripe::Charge.create(params)
     self.stripe_id = response.id
   end

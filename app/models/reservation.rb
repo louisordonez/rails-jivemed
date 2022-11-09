@@ -1,4 +1,4 @@
-class Appointment < ApplicationRecord
+class Reservation < ApplicationRecord
   attr_accessor :credit_card_number,
                 :credit_card_exp_month,
                 :credit_card_exp_year,
@@ -12,7 +12,7 @@ class Appointment < ApplicationRecord
 
   def create_payment
     params = {
-      appointment_id: id,
+      reservation_id: id,
       credit_card_number: credit_card_number,
       credit_card_exp_month: credit_card_exp_month,
       credit_card_exp_year: credit_card_exp_year,
