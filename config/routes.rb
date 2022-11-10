@@ -7,18 +7,18 @@ Rails.application.routes.draw do
       get '/auth/request', to: 'authentication#request_email_token'
 
       # Users
-      get '/users/show', to: 'users#users'
-      get '/users/patients', to: 'users#patients'
-      get '/users/doctors', to: 'users#doctors'
+      # get '/users', to: 'users#users'
 
-      get '/users/show/:id', to: 'users#user'
-      post '/users/patient', to: 'users#create_patient'
-      patch '/users/update/:id', to: 'users#update_user'
-      delete '/users/destroy/:id', to: 'users#destroy_user'
+      # get '/users/show/:id', to: 'users#user'
+      # post '/users/patient', to: 'users#create_patient'
+      # patch '/users/update/:id', to: 'users#update_user'
+      # delete '/users/destroy/:id', to: 'users#destroy_user'
 
-      get '/users/patient/show', to: 'users#current_user'
-      patch '/users/patient/update', to: 'users#update_current_user'
-      delete '/users/patient/destroy', to: 'users#destroy_current_user'
+      # get '/users/patient/show', to: 'users#current_user'
+      # patch '/users/patient/update', to: 'users#update_current_user'
+      # delete '/users/patient/destroy', to: 'users#destroy_current_user'
+
+      resources :patients, only: %i[index create]
 
       # Transactions
       post '/transactions', to: 'transactions#create'
