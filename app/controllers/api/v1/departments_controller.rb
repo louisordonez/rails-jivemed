@@ -13,11 +13,10 @@ class Api::V1::DepartmentsController < ApplicationController
   end
 
   def create
-    department_name = department_params[:name].strip.gsub(/\s+/, ' ')
-    department = Department.new(department_params.merge(name: department_name))
-    department_exists = Department.exists?(name: department_name)
+    name = remove_whitespace(department_params[:name])
+    department = Department.new(department_params.merge(name: name))
 
-    if !department_exists
+    if !department_exists?(name)
       if department.save
         render json: {
                  department: department,
@@ -32,13 +31,27 @@ class Api::V1::DepartmentsController < ApplicationController
                },
                status: :unprocessable_entity
       end
-    else
-      render json: {
-               errors: {
-                 messages: ['Department already exists.']
-               }
-             },
-             status: :unprocessable_entity
+    end
+  end
+
+  def update
+    name = remove_whitespace(department_params[:name])
+
+    if !department_exists?(name)
+      if @department.update(department_params.merge(name: name))
+        render json: {
+                 department: @department,
+                 messages: ['Department has been successfully updated!']
+               },
+               status: :ok
+      else
+        render json: {
+                 errors: {
+                   messages: @department.errors.full_messages
+                 }
+               },
+               status: :unprocessable_entity
+      end
     end
   end
 
@@ -53,6 +66,16 @@ class Api::V1::DepartmentsController < ApplicationController
   end
 
   private
+
+  def department_exists?(name)
+    return false unless Department.exists?(name: name)
+    render json: {
+             errors: {
+               messages: ['Department already exists.']
+             }
+           },
+           status: :unprocessable_entity
+  end
 
   def set_department
     @department = Department.find(params[:id])
