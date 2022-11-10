@@ -15,7 +15,7 @@ Rails.application.routes.draw do
       resources :doctors, only: %i[index create]
 
       # Transactions
-      post '/transactions', to: 'transactions#create'
+      resources :transactions, only: [:create]
     end
   end
 end
