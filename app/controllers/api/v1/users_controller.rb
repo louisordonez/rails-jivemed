@@ -2,10 +2,9 @@ class Api::V1::UsersController < ApplicationController
   skip_before_action :authenticate_request,
                      :is_email_verified?,
                      only: [:create_patient]
-  before_action :restrict_user, only: %i[users user]
-  before_action :set_user, only: %i[user update_user destroy_user]
+  before_action :set_user, :restrict_user, only: %i[show update destroy]
 
-  def users
+  def index
     users =
       User
         .all
@@ -15,11 +14,11 @@ class Api::V1::UsersController < ApplicationController
     render json: users, status: :ok
   end
 
-  def user
+  def show
     render json: @user, status: :ok
   end
 
-  def update_user
+  def update
     if (is_admin_role?(@user))
       render json: {
                errors: {
@@ -45,7 +44,7 @@ class Api::V1::UsersController < ApplicationController
     end
   end
 
-  def destroy_user
+  def destroy
     if (is_admin_role?(@user))
       render json: {
                errors: {
@@ -54,6 +53,7 @@ class Api::V1::UsersController < ApplicationController
              },
              status: :forbidden
     else
+      @user.transactions.destroy_all
       @user.destroy
 
       render json: {
@@ -64,7 +64,7 @@ class Api::V1::UsersController < ApplicationController
     end
   end
 
-  def current_user
+  def show_current_user
     render json: @current_user, status: :ok
   end
 
@@ -86,6 +86,7 @@ class Api::V1::UsersController < ApplicationController
   end
 
   def destroy_current_user
+    @current_user.transactions.destroy_all
     @current_user.destroy
 
     render json: {
