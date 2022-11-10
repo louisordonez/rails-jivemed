@@ -7,7 +7,7 @@ Rails.application.routes.draw do
       get '/auth/request', to: 'authentication#request_email_token'
 
       # Users
-      resources :users, only: %i[index show update destroy]
+      resources :users
       get '/user/show', to: 'users#show_current_user'
       put '/user/update', to: 'users#update_current_user'
       delete '/user/destroy', to: 'users#destroy_current_user'
