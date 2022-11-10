@@ -2,7 +2,8 @@ class Api::V1::UsersController < ApplicationController
   skip_before_action :authenticate_request,
                      :is_email_verified?,
                      only: [:create_patient]
-  before_action :set_user, :restrict_user, only: %i[show update destroy]
+  before_action :set_user, only: %i[show update destroy]
+  before_action :restrict_user, only: %i[index show update destroy]
 
   def index
     users =

@@ -1,6 +1,6 @@
 class Api::V1::PatientsController < ApplicationController
   skip_before_action :authenticate_request, :is_email_verified?, only: [:create]
-  before_action :restrict_patient, only: [:index]
+  before_action :restrict_user, only: [:index]
 
   def index
     patients =
@@ -13,16 +13,16 @@ class Api::V1::PatientsController < ApplicationController
   end
 
   def create
-    @patient = User.new(patient_params)
+    patient = User.new(patient_params)
 
-    if @patient.save
-      @patient.roles << patient_role
+    if patient.save
+      patient.roles << patient_role
 
-      payload = { user_email: @patient.email }
+      payload = { user_email: patient.email }
       email_token = JsonWebToken.encode(payload, 24.hours.from_now)
 
       render json: {
-               user: @patient,
+               user: patient,
                messages: ['A confirmation email has been sent!'],
                email_token: email_token
              },
@@ -30,7 +30,7 @@ class Api::V1::PatientsController < ApplicationController
     else
       render json: {
                errors: {
-                 messages: @patient.errors.full_messages
+                 messages: patient.errors.full_messages
                }
              },
              status: :unprocessable_entity
