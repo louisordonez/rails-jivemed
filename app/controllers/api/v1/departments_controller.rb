@@ -1,5 +1,6 @@
 class Api::V1::DepartmentsController < ApplicationController
   before_action :set_department, only: %i[show update destroy]
+  before_action :restrict_user, only: %i[index show]
 
   def index
     deparments = Department.all
@@ -9,6 +10,20 @@ class Api::V1::DepartmentsController < ApplicationController
 
   def show
     render json: @department, status: :ok
+  end
+
+  def create
+    # department = Department.new(department_params)
+
+    # if deparment.save render json: department, status: :created
+    # else
+    #   render json: {
+    #            errors: {
+    #              messages: deparment.errors.full_messages
+    #            }
+    #          },
+    #          status: :unprocessable_entity
+    # end
   end
 
   private
