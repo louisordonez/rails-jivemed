@@ -19,7 +19,11 @@ class Api::V1::DepartmentsController < ApplicationController
 
     if !department_exists
       if department.save
-        render json: department, status: :created
+        render json: {
+                 department: @department,
+                 messages: ['Deparment has been successfully created!']
+               },
+               status: :created
       else
         render json: {
                  errors: {
@@ -36,6 +40,16 @@ class Api::V1::DepartmentsController < ApplicationController
              },
              status: :unprocessable_entity
     end
+  end
+
+  def destroy
+    @department.destroy
+
+    render json: {
+             department: @department,
+             messages: ['Deparment has been successfully deleted!']
+           },
+           status: :ok
   end
 
   private
