@@ -13,14 +13,25 @@ class Api::V1::DepartmentsController < ApplicationController
   end
 
   def create
-    department = Department.new(department_params)
+    department_name = department_params[:name].strip.gsub(/\s+/, ' ')
+    department = Department.new(department_params.merge(name: department_name))
+    department_exists = Department.exists?(name: department_name)
 
-    if department.save
-      render json: department, status: :created
+    if !department_exists
+      if department.save
+        render json: department, status: :created
+      else
+        render json: {
+                 errors: {
+                   messages: department.errors.full_messages
+                 }
+               },
+               status: :unprocessable_entity
+      end
     else
       render json: {
                errors: {
-                 messages: deparment.errors.full_messages
+                 messages: ['Department already exists.']
                }
              },
              status: :unprocessable_entity
