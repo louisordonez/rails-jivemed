@@ -8,6 +8,7 @@ class Api::V1::PatientsController < ApplicationController
         .all
         .select { |user| user.roles.first == patient_role }
         .map { |user| { user: user, role: user.roles.first } }
+
     render json: patients, status: :ok
   end
 
