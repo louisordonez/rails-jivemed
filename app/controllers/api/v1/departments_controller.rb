@@ -13,17 +13,18 @@ class Api::V1::DepartmentsController < ApplicationController
   end
 
   def create
-    # department = Department.new(department_params)
+    department = Department.new(department_params)
 
-    # if deparment.save render json: department, status: :created
-    # else
-    #   render json: {
-    #            errors: {
-    #              messages: deparment.errors.full_messages
-    #            }
-    #          },
-    #          status: :unprocessable_entity
-    # end
+    if department.save
+      render json: department, status: :created
+    else
+      render json: {
+               errors: {
+                 messages: deparment.errors.full_messages
+               }
+             },
+             status: :unprocessable_entity
+    end
   end
 
   private
