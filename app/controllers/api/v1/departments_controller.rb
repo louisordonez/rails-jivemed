@@ -3,9 +3,9 @@ class Api::V1::DepartmentsController < ApplicationController
   before_action :restrict_user, only: %i[index show]
 
   def index
-    deparments = Department.all
+    departments = Department.all
 
-    render json: deparments, status: :ok
+    render json: departments, status: :ok
   end
 
   def show
@@ -20,8 +20,8 @@ class Api::V1::DepartmentsController < ApplicationController
     if !department_exists
       if department.save
         render json: {
-                 department: @department,
-                 messages: ['Deparment has been successfully created!']
+                 department: department,
+                 messages: ['Department has been successfully created!']
                },
                status: :created
       else
@@ -47,7 +47,7 @@ class Api::V1::DepartmentsController < ApplicationController
 
     render json: {
              department: @department,
-             messages: ['Deparment has been successfully deleted!']
+             messages: ['Department has been successfully deleted!']
            },
            status: :ok
   end
