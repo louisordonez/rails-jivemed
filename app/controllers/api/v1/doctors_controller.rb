@@ -1,5 +1,5 @@
 class Api::V1::DoctorsController < ApplicationController
-  before_action :restrict_user, only: [:index]
+  before_action :restrict_user, only: [:create]
 
   def index
     doctors =
