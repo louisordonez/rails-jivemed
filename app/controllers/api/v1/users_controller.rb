@@ -26,11 +26,7 @@ class Api::V1::UsersController < ApplicationController
              status: :forbidden
     else
       if @user.update(user_update_params)
-        render json: {
-                 user: @user,
-                 messages: ['User has been successfully updated!']
-               },
-               status: :ok
+        render json: { user: @user }, status: :ok
       else
         render json: {
                  errors: {
@@ -54,11 +50,7 @@ class Api::V1::UsersController < ApplicationController
       @user.transactions.destroy_all
       @user.destroy
 
-      render json: {
-               user: @user,
-               messages: ['User has been successfully deleted!']
-             },
-             status: :ok
+      render json: { user: @user }, status: :ok
     end
   end
 
@@ -68,11 +60,7 @@ class Api::V1::UsersController < ApplicationController
 
   def update_current_user
     if @current_user.update(user_params)
-      render json: {
-               user: @current_user,
-               messages: ['Your account has been successfully updated!']
-             },
-             status: :ok
+      render json: { user: @current_user }, status: :ok
     else
       render json: {
                errors: {
@@ -87,10 +75,7 @@ class Api::V1::UsersController < ApplicationController
     @current_user.transactions.destroy_all
     @current_user.destroy
 
-    render json: {
-             messages: ['Your account has been successfully deleted!']
-           },
-           status: :ok
+    render json: { user: @current_user }, status: :ok
   end
 
   private
