@@ -27,7 +27,6 @@ class Api::V1::TransactionsController < ApplicationController
           currency: 'php' #10,000 = PHP 100.00
         }
       )
-
     @transaction =
       Transaction.new(
         {
