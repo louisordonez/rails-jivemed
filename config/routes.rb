@@ -14,6 +14,9 @@ Rails.application.routes.draw do
       resources :patients, only: %i[index create]
       resources :doctors, only: %i[index create]
 
+      # Departments
+      resources :departments
+
       # Transactions
       resources :transactions, only: [:create]
     end

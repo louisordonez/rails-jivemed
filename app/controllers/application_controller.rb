@@ -5,6 +5,10 @@ class ApplicationController < ActionController::API
 
   private
 
+  def remove_whitespace(text)
+    text.strip.gsub(/\s+/, ' ')
+  end
+
   def admin_role
     Role.find_by(name: 'admin')
   end
