@@ -8,7 +8,7 @@ class Api::V1::DoctorsController < ApplicationController
         .select { |user| user.roles.first == doctor_role }
         .map { |user| { user: user, role: user.roles.first } }
 
-    render json: doctors, status: :ok
+    render json: { users: doctors }, status: :ok
   end
 
   def create
@@ -18,11 +18,7 @@ class Api::V1::DoctorsController < ApplicationController
       doctor.update(email_verified: true)
       doctor.roles << doctor_role
 
-      render json: {
-               user: doctor,
-               messages: ['Doctor has been successfully created!']
-             },
-             status: :created
+      render json: { user: doctor }, status: :created
     else
       render json: {
                errors: {
