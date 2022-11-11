@@ -18,11 +18,7 @@ class Api::V1::DepartmentsController < ApplicationController
 
     if !department_exists?(name)
       if department.save
-        render json: {
-                 department: department,
-                 messages: ['Department has been successfully created!']
-               },
-               status: :created
+        render json: { department: department }, status: :created
       else
         render json: {
                  errors: {
@@ -39,11 +35,7 @@ class Api::V1::DepartmentsController < ApplicationController
 
     if !department_exists?(name)
       if @department.update(department_params.merge(name: name))
-        render json: {
-                 department: @department,
-                 messages: ['Department has been successfully updated!']
-               },
-               status: :ok
+        render json: { department: @department }, status: :ok
       else
         render json: {
                  errors: {
@@ -58,11 +50,7 @@ class Api::V1::DepartmentsController < ApplicationController
   def destroy
     @department.destroy
 
-    render json: {
-             department: @department,
-             messages: ['Department has been successfully deleted!']
-           },
-           status: :ok
+    render json: { department: @department }, status: :ok
   end
 
   private
