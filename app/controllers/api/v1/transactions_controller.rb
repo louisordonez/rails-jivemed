@@ -36,7 +36,7 @@ class Api::V1::TransactionsController < ApplicationController
         }
       )
 
-    render json: charge if @transaction.save
+    render json: { charge: charge } if @transaction.save
   end
 
   private
