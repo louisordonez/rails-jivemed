@@ -18,11 +18,7 @@ class Api::V1::DoctorsController < ApplicationController
       doctor.update(email_verified: true)
       doctor.roles << doctor_role
 
-      render json: {
-               user: doctor,
-               messages: ['Doctor has been successfully created!']
-             },
-             status: :created
+      render json: { user: doctor }, status: :created
     else
       render json: {
                errors: {
