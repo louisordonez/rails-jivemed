@@ -14,11 +14,7 @@ class Api::V1::AuthenticationController < ApplicationController
       payload = { user_email: @current_user.email }
       new_email_token = JsonWebToken.encode(payload, 24.hours.from_now)
 
-      render json: {
-               messages: ['A confirmation email has been sent!'],
-               email_token: new_email_token
-             },
-             status: :ok
+      render json: { email_token: new_email_token }, status: :ok
     end
   end
 
@@ -64,11 +60,7 @@ class Api::V1::AuthenticationController < ApplicationController
       else
         @user.update(email_verified: true)
 
-        render json: {
-                 user: @user,
-                 messages: ['Your email has been successfully verified!']
-               },
-               status: :ok
+        render json: { user: @user }, status: :ok
       end
     end
   end
