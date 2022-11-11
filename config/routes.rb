@@ -20,8 +20,8 @@ Rails.application.routes.draw do
       patch '/users/patient/update', to: 'users#update_current_user'
       delete '/users/patient/destroy', to: 'users#destroy_current_user'
 
-      # Payment
-      post :reservations, to: 'reservations#create'
+      # Transactions
+      post '/transactions', to: 'transactions#create'
     end
   end
 end
