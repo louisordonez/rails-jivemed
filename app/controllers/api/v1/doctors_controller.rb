@@ -6,7 +6,9 @@ class Api::V1::DoctorsController < ApplicationController
       User
         .all
         .select { |user| user.roles.first == doctor_role }
-        .map { |user| { user: user, role: user.roles.first } }
+        .map do |user|
+          { user: user, role: user.roles.first, departments: user.departments }
+        end
 
     render json: { users: doctors }, status: :ok
   end
