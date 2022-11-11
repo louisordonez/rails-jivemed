@@ -7,7 +7,9 @@ class Api::V1::UsersController < ApplicationController
       User
         .all
         .select { |user| user.roles.first != admin_role }
-        .map { |user| { user: user, role: user.roles.first } }
+        .map do |user|
+          { user: user, role: user.roles.first, departments: user.departments }
+        end
 
     render json: { users: users }, status: :ok
   end
