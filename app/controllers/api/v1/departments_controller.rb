@@ -5,11 +5,11 @@ class Api::V1::DepartmentsController < ApplicationController
   def index
     departments = Department.all
 
-    render json: departments, status: :ok
+    render json: { departments: departments }, status: :ok
   end
 
   def show
-    render json: @department, status: :ok
+    render json: { department: @department }, status: :ok
   end
 
   def create
