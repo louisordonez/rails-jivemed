@@ -9,11 +9,11 @@ class Api::V1::UsersController < ApplicationController
         .select { |user| user.roles.first != admin_role }
         .map { |user| { user: user, role: user.roles.first } }
 
-    render json: users, status: :ok
+    render json: { users: users }, status: :ok
   end
 
   def show
-    render json: @user, status: :ok
+    render json: { user: @user }, status: :ok
   end
 
   def update
@@ -55,7 +55,7 @@ class Api::V1::UsersController < ApplicationController
   end
 
   def show_current_user
-    render json: @current_user, status: :ok
+    render json: { user: @current_user }, status: :ok
   end
 
   def update_current_user
