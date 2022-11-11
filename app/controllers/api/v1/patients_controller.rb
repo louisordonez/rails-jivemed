@@ -21,12 +21,7 @@ class Api::V1::PatientsController < ApplicationController
       payload = { user_email: patient.email }
       email_token = JsonWebToken.encode(payload, 24.hours.from_now)
 
-      render json: {
-               user: patient,
-               messages: ['A confirmation email has been sent!'],
-               email_token: email_token
-             },
-             status: :created
+      render json: { user: patient, email_token: email_token }, status: :created
     else
       render json: {
                errors: {
