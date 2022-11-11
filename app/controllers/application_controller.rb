@@ -30,7 +30,7 @@ class ApplicationController < ActionController::API
   end
 
   def restrict_user
-    if !is_admin_role?(@current_user)
+    unless is_admin_role?(@current_user)
       render json: {
                errors: {
                  messages: ['Request forbidden.']
@@ -41,7 +41,7 @@ class ApplicationController < ActionController::API
   end
 
   def is_email_verified?
-    if !@current_user.email_verified
+    unless @current_user.email_verified
       render json: {
                errors: {
                  messages: ['Email needs to be verified to continue.']
