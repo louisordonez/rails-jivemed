@@ -8,7 +8,7 @@ class Api::V1::DoctorsController < ApplicationController
         .select { |user| user.roles.first == doctor_role }
         .map { |user| { user: user, role: user.roles.first } }
 
-    render json: doctors, status: :ok
+    render json: { users: doctors }, status: :ok
   end
 
   def create
