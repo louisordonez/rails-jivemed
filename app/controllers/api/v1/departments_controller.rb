@@ -1,6 +1,6 @@
 class Api::V1::DepartmentsController < ApplicationController
   before_action :set_department, only: %i[show update destroy]
-  before_action :restrict_user, only: %i[index show]
+  before_action :restrict_user, only: %i[create update]
 
   def index
     departments = Department.all
