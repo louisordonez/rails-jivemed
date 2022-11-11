@@ -1,12 +1,8 @@
 class Api::V1::UsersController < ApplicationController
-  skip_before_action :authenticate_request,
-                     :is_email_verified?,
-                     only: [:create_patient]
-  before_action :restrict_user, only: %i[users user]
-  before_action :restrict_patient, only: [:patients]
-  before_action :set_user, only: %i[user update_user destroy_user]
+  before_action :set_user, only: %i[show update destroy]
+  before_action :restrict_user, only: %i[index show update destroy]
 
-  def users
+  def index
     users =
       User
         .all
@@ -16,56 +12,11 @@ class Api::V1::UsersController < ApplicationController
     render json: users, status: :ok
   end
 
-  def doctors
-    doctors =
-      User
-        .all
-        .select { |user| user.roles.first == doctor_role }
-        .map { |user| { user: user, role: user.roles.first } }
-
-    render json: doctors, status: :ok
-  end
-
-  def patients
-    patients =
-      User
-        .all
-        .select { |user| user.roles.first == patient_role }
-        .map { |user| { user: user, role: user.roles.first } }
-
-    render json: patients, status: :ok
-  end
-
-  def user
+  def show
     render json: @user, status: :ok
   end
 
-  def create_patient
-    @user = User.new(user_params)
-
-    if @user.save
-      @user.roles << patient_role
-
-      payload = { user_email: @user.email }
-      email_token = JsonWebToken.encode(payload, 24.hours.from_now)
-
-      render json: {
-               user: @user,
-               messages: ['A confirmation email has been sent!'],
-               email_token: email_token
-             },
-             status: :created
-    else
-      render json: {
-               errors: {
-                 messages: @user.errors.full_messages
-               }
-             },
-             status: :unprocessable_entity
-    end
-  end
-
-  def update_user
+  def update
     if (is_admin_role?(@user))
       render json: {
                errors: {
@@ -91,7 +42,7 @@ class Api::V1::UsersController < ApplicationController
     end
   end
 
-  def destroy_user
+  def destroy
     if (is_admin_role?(@user))
       render json: {
                errors: {
@@ -100,6 +51,7 @@ class Api::V1::UsersController < ApplicationController
              },
              status: :forbidden
     else
+      @user.transactions.destroy_all
       @user.destroy
 
       render json: {
@@ -110,7 +62,7 @@ class Api::V1::UsersController < ApplicationController
     end
   end
 
-  def current_user
+  def show_current_user
     render json: @current_user, status: :ok
   end
 
@@ -132,6 +84,7 @@ class Api::V1::UsersController < ApplicationController
   end
 
   def destroy_current_user
+    @current_user.transactions.destroy_all
     @current_user.destroy
 
     render json: {

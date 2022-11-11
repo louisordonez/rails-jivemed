@@ -26,18 +26,7 @@ class ApplicationController < ActionController::API
   end
 
   def restrict_user
-    if (!is_admin_role?(@current_user))
-      render json: {
-               errors: {
-                 messages: ['Request forbidden.']
-               }
-             },
-             status: :forbidden
-    end
-  end
-
-  def restrict_patient
-    if (is_patient_role?(@current_user))
+    if !is_admin_role?(@current_user)
       render json: {
                errors: {
                  messages: ['Request forbidden.']
