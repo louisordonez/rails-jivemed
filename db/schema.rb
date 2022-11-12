@@ -31,8 +31,11 @@ ActiveRecord::Schema[7.0].define(version: 2022_11_12_040144) do
   end
 
   create_table "doctor_fees", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.decimal "amount", precision: 10, scale: 2
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_doctor_fees_on_user_id"
   end
 
   create_table "roles", force: :cascade do |t|
@@ -66,5 +69,6 @@ ActiveRecord::Schema[7.0].define(version: 2022_11_12_040144) do
     t.datetime "updated_at", null: false
   end
 
+  add_foreign_key "doctor_fees", "users"
   add_foreign_key "transactions", "users"
 end

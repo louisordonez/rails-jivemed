@@ -8,7 +8,12 @@ class Api::V1::UsersController < ApplicationController
         .all
         .select { |user| user.roles.first != admin_role }
         .map do |user|
-          { user: user, role: user.roles.first, departments: user.departments }
+          {
+            user: user,
+            role: user.roles.first,
+            departments: user.departments,
+            doctor_fee: user.doctor_fee
+          }
         end
 
     render json: { users: users }, status: :ok
@@ -18,7 +23,8 @@ class Api::V1::UsersController < ApplicationController
     render json: {
              user: @user,
              role: @user.roles.first,
-             departments: @user.departments
+             departments: @user.departments,
+             doctor_fee: @user.doctor_fee
            },
            status: :ok
   end
@@ -36,7 +42,8 @@ class Api::V1::UsersController < ApplicationController
         render json: {
                  user: @user,
                  role: @user.roles.first,
-                 departments: @user.departments
+                 departments: @user.departments,
+                 doctor_fee: @user.doctor_fee
                },
                status: :ok
       else
@@ -65,7 +72,8 @@ class Api::V1::UsersController < ApplicationController
       render json: {
                user: @user,
                role: @user.roles.first,
-               departments: @user.departments
+               departments: @user.departments,
+               doctor_fee: @user.doctor_fee
              },
              status: :ok
     end
@@ -75,7 +83,8 @@ class Api::V1::UsersController < ApplicationController
     render json: {
              user: @current_user,
              role: @current_user.roles.first,
-             departments: @current_user.departments
+             departments: @current_user.departments,
+             doctor_fee: @current_user.doctor_fee
            },
            status: :ok
   end
@@ -85,7 +94,8 @@ class Api::V1::UsersController < ApplicationController
       render json: {
                user: @current_user,
                role: @current_user.roles.first,
-               departments: @current_user.departments
+               departments: @current_user.departments,
+               doctor_fee: @current_user.doctor_fee
              },
              status: :ok
     else
@@ -105,7 +115,8 @@ class Api::V1::UsersController < ApplicationController
     render json: {
              user: @current_user,
              role: @current_user.roles.first,
-             departments: @current_user.departments
+             departments: @current_user.departments,
+             doctor_fee: @current_user.doctor_fee
            },
            status: :ok
   end
