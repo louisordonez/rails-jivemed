@@ -5,7 +5,7 @@ class Api::V1::DoctorsController < ApplicationController
     doctors =
       User
         .all
-        .select { |user| user.roles == doctor_role }
+        .select { |user| user.role == doctor_role }
         .map do |user|
           {
             user: user,
