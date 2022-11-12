@@ -1,7 +1,7 @@
 class ApplicationController < ActionController::API
   include JsonWebToken
 
-  before_action :authenticate_request, :is_email_verified?
+  before_action :authenticate_request, :email_verified
 
   private
 
@@ -40,7 +40,7 @@ class ApplicationController < ActionController::API
     end
   end
 
-  def is_email_verified?
+  def email_verified
     unless @current_user.email_verified
       render json: {
                errors: {

@@ -1,5 +1,5 @@
 class Api::V1::PatientsController < ApplicationController
-  skip_before_action :authenticate_request, :is_email_verified?, only: [:create]
+  skip_before_action :authenticate_request, :email_verified, only: [:create]
   before_action :restrict_user, only: [:index]
 
   def index

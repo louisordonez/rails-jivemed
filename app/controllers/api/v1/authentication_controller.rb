@@ -1,6 +1,6 @@
 class Api::V1::AuthenticationController < ApplicationController
   skip_before_action :authenticate_request, except: [:request_email_token]
-  skip_before_action :is_email_verified?
+  skip_before_action :email_verified
 
   def request_email_token
     if @current_user.email_verified
