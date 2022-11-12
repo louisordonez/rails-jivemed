@@ -11,20 +11,22 @@ admin =
     first_name: 'Jivemed Admin',
     last_name: 'Jivemed Admin',
     email: 'jivemed.admin@email.com',
-    password: "#{Rails.application.credentials.users.admin_password}"
+    password: "#{Rails.application.credentials.users.admin_password}",
+    role_id: "#{Role.find_by(name: 'admin').id}"
   )
 admin.update(email_verified: true)
-admin.roles << Role.find_by(name: 'admin')
+# admin.roles << Role.find_by(name: 'admin')
 
 doctor =
   User.create(
     first_name: 'Maria',
     last_name: 'Dela Cruz',
     email: 'mdc.doctor@email.com',
-    password: "#{Rails.application.credentials.users.doctor_password}"
+    password: "#{Rails.application.credentials.users.doctor_password}",
+    role_id: "#{Role.find_by(name: 'doctor').id}"
   )
 doctor.update(email_verified: true)
-doctor.roles << Role.find_by(name: 'doctor')
+# doctor.roles << Role.find_by(name: 'doctor')
 doctor.departments << Department.find_by(name: 'Pediatrics')
 doctor.create_doctor_fee(amount: 1000)
 
@@ -33,10 +35,11 @@ patient =
     first_name: 'Juan',
     last_name: 'Dela Cruz',
     email: 'jdc@email.com',
-    password: "#{Rails.application.credentials.users.patient_password}"
+    password: "#{Rails.application.credentials.users.patient_password}",
+    role_id: "#{Role.find_by(name: 'patient').id}"
   )
 patient.update(email_verified: true)
-patient.roles << Role.find_by(name: 'patient')
+# patient.roles << Role.find_by(name: 'patient')
 
 # schedule = Schedule.create(doctor_id: 2, date: Date.new(2022, 02, 02)) #YYYY-MM-DD
 

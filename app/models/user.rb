@@ -4,7 +4,10 @@ class User < ApplicationRecord
   has_secure_password
   has_one :doctor_fee
   has_many :transactions
-  has_and_belongs_to_many :roles
+
+  belongs_to :role
+
+  # has_and_belongs_to_many :roles
   has_and_belongs_to_many :departments
 
   validates :first_name, presence: true
