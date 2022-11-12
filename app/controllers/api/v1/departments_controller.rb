@@ -57,6 +57,7 @@ class Api::V1::DepartmentsController < ApplicationController
 
   def department_exists?(name)
     return false unless Department.exists?(name: name)
+
     render json: {
              errors: {
                messages: ['Department already exists.']
