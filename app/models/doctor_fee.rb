@@ -1,0 +1,2 @@
+class DoctorFee < ApplicationRecord
+end
