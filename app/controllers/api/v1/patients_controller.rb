@@ -16,8 +16,6 @@ class Api::V1::PatientsController < ApplicationController
     patient = User.new(patient_params.merge(role_id: patient_role.id))
 
     if patient.save
-      patient.update(role_id: patient_role.id)
-
       payload = { user_email: patient.email }
       email_token = JsonWebToken.encode(payload, 24.hours.from_now)
 
