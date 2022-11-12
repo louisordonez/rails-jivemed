@@ -90,7 +90,9 @@ class Api::V1::UsersController < ApplicationController
   end
 
   def update_current_user
-    if @current_user.update(user_params)
+    role = @current_user.role
+
+    if @current_user.update(user_params.merge(role_id: role.id))
       render json: {
                user: @current_user,
                role: @current_user.role,
