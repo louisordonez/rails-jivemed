@@ -13,8 +13,8 @@ admin =
     email: 'jivemed.admin@email.com',
     password: Rails.application.credentials.users.admin_password
   )
-admin.update(role_id: Role.find_by(name: 'admin').id)
 admin.update(email_verified: true)
+admin.update(role_id: Role.find_by(name: 'admin').id)
 
 doctor =
   User.create(
@@ -23,8 +23,8 @@ doctor =
     email: 'mdc.doctor@email.com',
     password: Rails.application.credentials.users.doctor_password
   )
-doctor.update(role_id: Role.find_by(name: 'doctor').id)
 doctor.update(email_verified: true)
+doctor.update(role_id: Role.find_by(name: 'doctor').id)
 doctor.departments << Department.find_by(name: 'Pediatrics')
 doctor.create_doctor_fee(amount: 1000)
 
@@ -35,8 +35,8 @@ patient =
     email: 'jdc@email.com',
     password: Rails.application.credentials.users.patient_password
   )
-patient.update(role_id: Role.find_by(name: 'patient').id)
 patient.update(email_verified: true)
+patient.update(role_id: Role.find_by(name: 'patient').id)
 
 # schedule = Schedule.create(doctor_id: 2, date: Date.new(2022, 02, 02)) #YYYY-MM-DD
 
