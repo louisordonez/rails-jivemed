@@ -30,6 +30,18 @@ class Api::V1::UsersController < ApplicationController
   end
 
   def update
+    begin
+      departments = doctor_department_update_params[:department_id]
+    rescue ActionController::ParameterMissing
+      departments = nil
+    end
+
+    begin
+      doctor_fee = doctor_fee_update_params[:amount]
+    rescue ActionController::ParameterMissing
+      doctor_fee = nil
+    end
+
     if (is_admin_role?(@user))
       render json: {
                errors: {
@@ -39,6 +51,15 @@ class Api::V1::UsersController < ApplicationController
              status: :forbidden
     else
       if @user.update(user_update_params)
+        if departments
+          @user.departments.destroy_all
+          departments.each do |department_id|
+            @user.departments << Department.find_by(id: department_id)
+          end
+        end
+
+        @user.doctor_fee.update(amount: doctor_fee) if doctor_fee
+
         render json: {
                  user: @user,
                  role: @user.role,
