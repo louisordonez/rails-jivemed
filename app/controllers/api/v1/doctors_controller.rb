@@ -7,7 +7,12 @@ class Api::V1::DoctorsController < ApplicationController
         .all
         .select { |user| user.roles.first == doctor_role }
         .map do |user|
-          { user: user, role: user.roles.first, departments: user.departments }
+          {
+            user: user,
+            role: user.roles.first,
+            departments: user.departments,
+            doctor_fee: user.doctor_fee
+          }
         end
 
     render json: { users: doctors }, status: :ok
@@ -19,8 +24,18 @@ class Api::V1::DoctorsController < ApplicationController
     if doctor.save
       doctor.update(email_verified: true)
       doctor.roles << doctor_role
+      doctor.departments << Department.find_by(
+        id: doctor_department_params[:department_id]
+      )
+      doctor.create_doctor_fee(amount: doctor_fee_params[:amount])
 
-      render json: { user: doctor }, status: :created
+      render json: {
+               user: doctor,
+               role: doctor.roles.first,
+               departments: doctor.departments,
+               doctor_fee: doctor.doctor_fee
+             },
+             status: :created
     else
       render json: {
                errors: {
@@ -35,5 +50,13 @@ class Api::V1::DoctorsController < ApplicationController
 
   def doctor_params
     params.require(:user).permit(:first_name, :last_name, :email, :password)
+  end
+
+  def doctor_department_params
+    params.require(:department).permit(:department_id)
+  end
+
+  def doctor_fee_params
+    params.require(:fee).permit(:amount)
   end
 end

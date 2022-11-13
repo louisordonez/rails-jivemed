@@ -2,9 +2,10 @@ class User < ApplicationRecord
   require 'securerandom'
 
   has_secure_password
+  has_one :doctor_fee
+  has_many :transactions
   has_and_belongs_to_many :roles
   has_and_belongs_to_many :departments
-  has_many :transactions
 
   validates :first_name, presence: true
   validates :last_name, presence: true

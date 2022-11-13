@@ -8,14 +8,25 @@ class Api::V1::UsersController < ApplicationController
         .all
         .select { |user| user.roles.first != admin_role }
         .map do |user|
-          { user: user, role: user.roles.first, departments: user.departments }
+          {
+            user: user,
+            role: user.roles.first,
+            departments: user.departments,
+            doctor_fee: user.doctor_fee
+          }
         end
 
     render json: { users: users }, status: :ok
   end
 
   def show
-    render json: { user: @user }, status: :ok
+    render json: {
+             user: @user,
+             role: @user.roles.first,
+             departments: @user.departments,
+             doctor_fee: @user.doctor_fee
+           },
+           status: :ok
   end
 
   def update
@@ -28,7 +39,13 @@ class Api::V1::UsersController < ApplicationController
              status: :forbidden
     else
       if @user.update(user_update_params)
-        render json: { user: @user }, status: :ok
+        render json: {
+                 user: @user,
+                 role: @user.roles.first,
+                 departments: @user.departments,
+                 doctor_fee: @user.doctor_fee
+               },
+               status: :ok
       else
         render json: {
                  errors: {
@@ -52,17 +69,35 @@ class Api::V1::UsersController < ApplicationController
       @user.transactions.destroy_all
       @user.destroy
 
-      render json: { user: @user }, status: :ok
+      render json: {
+               user: @user,
+               role: @user.roles.first,
+               departments: @user.departments,
+               doctor_fee: @user.doctor_fee
+             },
+             status: :ok
     end
   end
 
   def show_current_user
-    render json: { user: @current_user }, status: :ok
+    render json: {
+             user: @current_user,
+             role: @current_user.roles.first,
+             departments: @current_user.departments,
+             doctor_fee: @current_user.doctor_fee
+           },
+           status: :ok
   end
 
   def update_current_user
     if @current_user.update(user_params)
-      render json: { user: @current_user }, status: :ok
+      render json: {
+               user: @current_user,
+               role: @current_user.roles.first,
+               departments: @current_user.departments,
+               doctor_fee: @current_user.doctor_fee
+             },
+             status: :ok
     else
       render json: {
                errors: {
@@ -77,7 +112,13 @@ class Api::V1::UsersController < ApplicationController
     @current_user.transactions.destroy_all
     @current_user.destroy
 
-    render json: { user: @current_user }, status: :ok
+    render json: {
+             user: @current_user,
+             role: @current_user.roles.first,
+             departments: @current_user.departments,
+             doctor_fee: @current_user.doctor_fee
+           },
+           status: :ok
   end
 
   private
