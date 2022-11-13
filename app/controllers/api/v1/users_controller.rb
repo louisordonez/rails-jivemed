@@ -6,11 +6,11 @@ class Api::V1::UsersController < ApplicationController
     users =
       User
         .all
-        .select { |user| user.roles.first != admin_role }
+        .select { |user| user.role != admin_role }
         .map do |user|
           {
             user: user,
-            role: user.roles.first,
+            role: user.role,
             departments: user.departments,
             doctor_fee: user.doctor_fee
           }
@@ -22,7 +22,7 @@ class Api::V1::UsersController < ApplicationController
   def show
     render json: {
              user: @user,
-             role: @user.roles.first,
+             role: @user.role,
              departments: @user.departments,
              doctor_fee: @user.doctor_fee
            },
@@ -41,7 +41,7 @@ class Api::V1::UsersController < ApplicationController
       if @user.update(user_update_params)
         render json: {
                  user: @user,
-                 role: @user.roles.first,
+                 role: @user.role,
                  departments: @user.departments,
                  doctor_fee: @user.doctor_fee
                },
@@ -71,7 +71,7 @@ class Api::V1::UsersController < ApplicationController
 
       render json: {
                user: @user,
-               role: @user.roles.first,
+               role: @user.role,
                departments: @user.departments,
                doctor_fee: @user.doctor_fee
              },
@@ -82,7 +82,7 @@ class Api::V1::UsersController < ApplicationController
   def show_current_user
     render json: {
              user: @current_user,
-             role: @current_user.roles.first,
+             role: @current_user.role,
              departments: @current_user.departments,
              doctor_fee: @current_user.doctor_fee
            },
@@ -90,10 +90,12 @@ class Api::V1::UsersController < ApplicationController
   end
 
   def update_current_user
-    if @current_user.update(user_params)
+    role = @current_user.role
+
+    if @current_user.update(user_params.merge(role_id: role.id))
       render json: {
                user: @current_user,
-               role: @current_user.roles.first,
+               role: @current_user.role,
                departments: @current_user.departments,
                doctor_fee: @current_user.doctor_fee
              },
@@ -114,7 +116,7 @@ class Api::V1::UsersController < ApplicationController
 
     render json: {
              user: @current_user,
-             role: @current_user.roles.first,
+             role: @current_user.role,
              departments: @current_user.departments,
              doctor_fee: @current_user.doctor_fee
            },

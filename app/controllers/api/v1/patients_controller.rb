@@ -6,18 +6,16 @@ class Api::V1::PatientsController < ApplicationController
     patients =
       User
         .all
-        .select { |user| user.roles.first == patient_role }
-        .map { |user| { user: user, role: user.roles.first } }
+        .select { |user| user.role == patient_role }
+        .map { |user| { user: user, role: user.role } }
 
     render json: { users: patients }, status: :ok
   end
 
   def create
-    patient = User.new(patient_params)
+    patient = User.new(patient_params.merge(role_id: patient_role.id))
 
     if patient.save
-      patient.roles << patient_role
-
       payload = { user_email: patient.email }
       email_token = JsonWebToken.encode(payload, 24.hours.from_now)
 

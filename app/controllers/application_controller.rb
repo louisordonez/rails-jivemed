@@ -22,11 +22,11 @@ class ApplicationController < ActionController::API
   end
 
   def is_admin_role?(user)
-    user.roles.first == admin_role
+    user.role == admin_role
   end
 
   def is_patient_role?(user)
-    user.roles.first == patient_role
+    user.role == patient_role
   end
 
   def restrict_user

@@ -5,11 +5,11 @@ class Api::V1::DoctorsController < ApplicationController
     doctors =
       User
         .all
-        .select { |user| user.roles.first == doctor_role }
+        .select { |user| user.role == doctor_role }
         .map do |user|
           {
             user: user,
-            role: user.roles.first,
+            role: user.role,
             departments: user.departments,
             doctor_fee: user.doctor_fee
           }
@@ -19,11 +19,10 @@ class Api::V1::DoctorsController < ApplicationController
   end
 
   def create
-    doctor = User.new(doctor_params)
+    doctor = User.new(doctor_params.merge(role_id: doctor_role.id))
 
     if doctor.save
       doctor.update(email_verified: true)
-      doctor.roles << doctor_role
       doctor.departments << Department.find_by(
         id: doctor_department_params[:department_id]
       )
@@ -31,7 +30,7 @@ class Api::V1::DoctorsController < ApplicationController
 
       render json: {
                user: doctor,
-               role: doctor.roles.first,
+               role: doctor.role,
                departments: doctor.departments,
                doctor_fee: doctor.doctor_fee
              },
@@ -57,6 +56,6 @@ class Api::V1::DoctorsController < ApplicationController
   end
 
   def doctor_fee_params
-    params.require(:fee).permit(:amount)
+    params.require(:doctor_fee).permit(:amount)
   end
 end
