@@ -92,7 +92,28 @@ class Api::V1::UsersController < ApplicationController
   def update_current_user
     role = @current_user.role
 
+    begin
+      departments = doctor_department_update_params[:department_id]
+    rescue ActionController::ParameterMissing
+      departments = nil
+    end
+
+    begin
+      doctor_fee = doctor_fee_update_params[:amount]
+    rescue ActionController::ParameterMissing
+      doctor_fee = nil
+    end
+
     if @current_user.update(user_params.merge(role_id: role.id))
+      if departments
+        @current_user.departments.destroy_all
+        departments.each do |department_id|
+          @current_user.departments << Department.find_by(id: department_id)
+        end
+      end
+
+      @current_user.doctor_fee.update(amount: doctor_fee) if doctor_fee
+
       render json: {
                user: @current_user,
                role: @current_user.role,
@@ -142,5 +163,13 @@ class Api::V1::UsersController < ApplicationController
 
   def user_update_params
     params.require(:user).permit(:first_name, :last_name, :email)
+  end
+
+  def doctor_department_update_params
+    params.require(:department).permit(department_id: [])
+  end
+
+  def doctor_fee_update_params
+    params.require(:doctor_fee).permit(:amount)
   end
 end
