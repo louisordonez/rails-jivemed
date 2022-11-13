@@ -56,6 +56,6 @@ class Api::V1::DoctorsController < ApplicationController
   end
 
   def doctor_fee_params
-    params.require(:fee).permit(:amount)
+    params.require(:doctor_fee).permit(:amount)
   end
 end
