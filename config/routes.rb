@@ -20,6 +20,9 @@ Rails.application.routes.draw do
       # Schedules
       resources :schedules
 
+      # Appointments
+      resources :appointments
+
       # Transactions
       resources :transactions
     end
