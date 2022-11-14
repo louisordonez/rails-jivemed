@@ -7,10 +7,9 @@ class Api::V1::SchedulesController < ApplicationController
     render json: {
              schedules:
                schedules.map do |schedule|
-                 {
-                   user: User.find_by(id: schedule[:user_id]),
-                   schedule: schedule
-                 }
+                 user = User.find_by(id: schedule[:user_id])
+
+                 { user: user, role: user.role, schedule: schedule }
                end
            },
            status: :ok
@@ -19,7 +18,12 @@ class Api::V1::SchedulesController < ApplicationController
   def show
     user = User.find(@schedule[:user_id])
 
-    render json: { user: user, schedules: @schedule }, status: :ok
+    render json: {
+             user: user,
+             role: user.role,
+             schedules: @schedule
+           },
+           status: :ok
   end
 
   def update
@@ -28,7 +32,12 @@ class Api::V1::SchedulesController < ApplicationController
        )
       user = User.find(@schedule[:user_id])
 
-      render json: { user: user, schedules: @schedule }, status: :ok
+      render json: {
+               user: user,
+               role: user.role,
+               schedules: @schedule
+             },
+             status: :ok
     else
       render json: {
                errors: {
@@ -44,7 +53,12 @@ class Api::V1::SchedulesController < ApplicationController
 
     @schedule.destroy
 
-    render json: { user: user, schedules: @schedule }, status: :ok
+    render json: {
+             user: user,
+             role: user.role,
+             schedules: @schedule
+           },
+           status: :ok
   end
 
   private
