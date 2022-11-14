@@ -1,5 +1,3 @@
-require 'date'
-
 roles = %w[admin doctor patient]
 roles.each { |role| Role.create(name: role) }
 
@@ -38,7 +36,7 @@ patient =
 patient.update(email_verified: true)
 patient.update(role_id: Role.find_by(name: 'patient').id)
 
-# schedule = Schedule.create(doctor_id: 2, date: Date.new(2022, 02, 02)) #YYYY-MM-DD
+schedule = Schedule.create(user_id: doctor.id, date: Date.new(2022, 02, 02)) #YYYY-MM-DD
 
 # appointment = Appointment.create(schedule_id: 1, user_id: 3)
 
