@@ -4,6 +4,7 @@ class User < ApplicationRecord
   has_secure_password
   belongs_to :role
   has_one :doctor_fee
+  has_many :schedules
   has_many :transactions
   has_and_belongs_to_many :departments
 
