@@ -17,8 +17,11 @@ Rails.application.routes.draw do
       # Departments
       resources :departments
 
+      # Schedules
+      resources :schedules
+
       # Transactions
-      resources :transactions, only: [:create]
+      resources :transactions
     end
   end
 end
