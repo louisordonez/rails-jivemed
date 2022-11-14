@@ -17,16 +17,24 @@ class Api::V1::SchedulesController < ApplicationController
   end
 
   def show
-    user = User.find_by(id: @schedule[:user_id])
+    user = User.find(@schedule[:user_id])
     schedule = user.schedules
 
     render json: { user: user, schedules: schedule }, status: :ok
   end
 
+  def destroy
+    user = User.find(@schedule[:user_id])
+
+    @schedule.destroy
+
+    render json: { user: user, schedules: @schedule }, status: :ok
+  end
+
   private
 
   def set_schedule
-    @schedule = Schedule.find_by(id: params[:id])
+    @schedule = Schedule.find(params[:id])
   rescue ActiveRecord::RecordNotFound
     render json: {
              errors: {
