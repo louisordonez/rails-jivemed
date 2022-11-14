@@ -18,9 +18,25 @@ class Api::V1::SchedulesController < ApplicationController
 
   def show
     user = User.find(@schedule[:user_id])
-    schedule = user.schedules
 
-    render json: { user: user, schedules: schedule }, status: :ok
+    render json: { user: user, schedules: @schedule }, status: :ok
+  end
+
+  def update
+    if @schedule.update(
+         schedule_params.merge(date: Date.parse(schedule_params[:date]))
+       )
+      user = User.find(@schedule[:user_id])
+
+      render json: { user: user, schedules: @schedule }, status: :ok
+    else
+      render json: {
+               errors: {
+                 messages: @current_user.errors.full_messages
+               }
+             },
+             status: :unprocessable_entity
+    end
   end
 
   def destroy
@@ -42,5 +58,9 @@ class Api::V1::SchedulesController < ApplicationController
              }
            },
            status: :not_found
+  end
+
+  def schedule_params
+    params.require(:schedule).permit(:date)
   end
 end

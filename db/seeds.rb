@@ -36,7 +36,7 @@ patient =
 patient.update(email_verified: true)
 patient.update(role_id: Role.find_by(name: 'patient').id)
 
-schedule = Schedule.create(user_id: doctor.id, date: Date.new(2022, 02, 02)) #YYYY-MM-DD
+schedule = Schedule.create(user_id: doctor.id, date: Date.parse('2022-01-31')) #YYYY-MM-DD
 
 # appointment = Appointment.create(schedule_id: 1, user_id: 3)
 
