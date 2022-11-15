@@ -2,7 +2,7 @@ Rails.application.routes.draw do
   namespace :api do
     namespace :v1 do
       # Authentication
-      post '/auth/sign_in', to: 'authentication#sign_in'
+      post '/auth/sign-in', to: 'authentication#sign_in'
       get '/auth/verify', to: 'authentication#verify_email'
       get '/auth/request', to: 'authentication#request_email_token'
 
@@ -13,6 +13,9 @@ Rails.application.routes.draw do
       delete '/user/destroy', to: 'users#destroy_current_user'
       resources :patients, only: %i[index create]
       resources :doctors, only: %i[index create]
+
+      # Destroyed
+      get '/destroyed/users', to: 'users#destroyed'
 
       # Departments
       resources :departments

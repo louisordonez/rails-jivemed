@@ -6,7 +6,24 @@ class Api::V1::UsersController < ApplicationController
     users =
       User
         .all
-        .select { |user| user.role != admin_role }
+        .select { |user| user.role != admin_role && !user.deleted_at }
+        .map do |user|
+          {
+            user: user,
+            role: user.role,
+            departments: user.departments,
+            doctor_fee: user.doctor_fee
+          }
+        end
+
+    render json: { users: users }, status: :ok
+  end
+
+  def destroyed
+    users =
+      User
+        .all
+        .select { |user| user.role != admin_role && user.deleted_at }
         .map do |user|
           {
             user: user,
@@ -87,7 +104,8 @@ class Api::V1::UsersController < ApplicationController
              },
              status: :forbidden
     else
-      @user.destroy
+      # @user.destroy
+      @user.update(deleted_at: DateTime.now())
 
       render json: {
                user: @user,
@@ -152,7 +170,8 @@ class Api::V1::UsersController < ApplicationController
   end
 
   def destroy_current_user
-    @current_user.destroy
+    # @current_user.destroy
+    @current_user.update(deleted_at: DateTime.now())
 
     render json: {
              user: @current_user,

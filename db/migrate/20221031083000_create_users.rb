@@ -9,6 +9,7 @@ class CreateUsers < ActiveRecord::Migration[7.0]
       t.boolean :email_verified
 
       t.timestamps
+      t.datetime :deleted_at
     end
   end
 end
