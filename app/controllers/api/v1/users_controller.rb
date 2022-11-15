@@ -104,7 +104,6 @@ class Api::V1::UsersController < ApplicationController
              },
              status: :forbidden
     else
-      # @user.destroy
       @user.update(deleted_at: DateTime.now())
 
       render json: {
@@ -170,7 +169,6 @@ class Api::V1::UsersController < ApplicationController
   end
 
   def destroy_current_user
-    # @current_user.destroy
     @current_user.update(deleted_at: DateTime.now())
 
     render json: {

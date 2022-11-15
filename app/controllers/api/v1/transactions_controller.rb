@@ -1,4 +1,6 @@
 class Api::V1::TransactionsController < ApplicationController
+  before_action :set_transaction, only: [:show]
+
   def index
     transactions = Transaction.all
 
@@ -13,6 +15,18 @@ class Api::V1::TransactionsController < ApplicationController
                    doctor: transaction.appointment.schedule.user
                  }
                }
+           }
+  end
+
+  def show
+    render json: {
+             transaction: @transaction,
+             user: @transaction.user,
+             appointment: {
+               details: @transaction.appointment,
+               schedule: @transaction.appointment.schedule,
+               doctor: @transaction.appointment.schedule.user
+             }
            }
   end
 
@@ -62,6 +76,17 @@ class Api::V1::TransactionsController < ApplicationController
   end
 
   private
+
+  def set_transaction
+    @transaction = Transaction.find(params[:id])
+  rescue ActiveRecord::RecordNotFound
+    render json: {
+             errors: {
+               messages: ['Record not found.']
+             }
+           },
+           status: :not_found
+  end
 
   def transaction_params
     params.require(:data).permit(
