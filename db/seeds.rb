@@ -38,11 +38,12 @@ patient.update(role_id: Role.find_by(name: 'patient').id)
 
 schedule = Schedule.create(user_id: doctor.id, date: Date.parse('2022-01-31')) #YYYY-MM-DD
 
-# appointment = Appointment.create(schedule_id: 1, user_id: 3)
+appointment = Appointment.create!(user_id: patient.id, schedule_id: schedule.id)
 
 transaction =
   Transaction.create(
     user_id: patient.id,
+    appointment_id: appointment.id,
     email: patient.email,
     stripe_id: 'test_stripe_id_123456',
     amount: 1_333_425.to_f / 100

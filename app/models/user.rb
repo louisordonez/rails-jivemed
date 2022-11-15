@@ -5,6 +5,7 @@ class User < ApplicationRecord
   belongs_to :role
   has_one :doctor_fee
   has_many :schedules
+  has_many :appointments
   has_many :transactions
   has_and_belongs_to_many :departments
 
