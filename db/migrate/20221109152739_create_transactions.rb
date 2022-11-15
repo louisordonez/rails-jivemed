@@ -2,6 +2,7 @@ class CreateTransactions < ActiveRecord::Migration[7.0]
   def change
     create_table :transactions do |t|
       t.references :user, null: false
+      # t.references :appointment, null: false
       t.string :first_name
       t.string :last_name
       t.string :email

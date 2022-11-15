@@ -23,8 +23,8 @@ class Api::V1::TransactionsController < ApplicationController
       Stripe::Charge.create(
         {
           customer: customer,
-          amount: transaction_params[:amount],
-          currency: 'php' #10,000 = PHP 100.00
+          amount: transaction_params[:amount], #100025 = PHP 1000.25
+          currency: 'php'
         }
       )
     @transaction =
@@ -35,11 +35,13 @@ class Api::V1::TransactionsController < ApplicationController
           last_name: @current_user.last_name,
           email: @current_user.email,
           stripe_id: charge[:id],
-          amount: charge[:amount]
+          amount: charge[:amount].to_f / 100
         }
       )
 
-    render json: { charge: charge } if @transaction.save
+    if charge
+      render json: { transaction: @transaction } if @transaction.save
+    end
   end
 
   private
