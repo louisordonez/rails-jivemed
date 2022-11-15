@@ -2,9 +2,8 @@ class Api::V1::AppointmentsController < ApplicationController
   before_action :set_appointment, only: [:show]
 
   def index
-    appointments = Appointment.all
     appointments =
-      appointments.map do |appointment|
+      Appointment.all.map do |appointment|
         {
           details: appointment,
           patient: appointment.user,

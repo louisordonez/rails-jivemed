@@ -2,9 +2,8 @@ class Api::V1::UserTransactionsController < ApplicationController
   before_action :set_user_transaction, only: [:show]
 
   def index
-    user_transactions = UserTransaction.all
     user_transactions =
-      user_transactions.map do |transaction|
+      UserTransaction.all.map do |transaction|
         { details: transaction, user: transaction.user }
       end
 

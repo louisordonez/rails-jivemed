@@ -37,13 +37,14 @@ class Api::V1::UsersController < ApplicationController
   end
 
   def show
-    render json: {
-             user: @user,
-             role: @user.role,
-             departments: @user.departments,
-             doctor_fee: @user.doctor_fee
-           },
-           status: :ok
+    user = {
+      user: @user,
+      role: @user.role,
+      departments: @user.departments,
+      doctor_fee: @user.doctor_fee
+    }
+
+    render json: user, status: :ok
   end
 
   def update

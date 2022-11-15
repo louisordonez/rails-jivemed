@@ -4,9 +4,8 @@ class Api::V1::SchedulesController < ApplicationController
   before_action :restrict_admin, only: %i[create update destroy]
 
   def index
-    schedules = Schedule.all
     schedules =
-      schedules.map do |schedule|
+      Schedule.all.map do |schedule|
         user = User.find_by(id: schedule[:user_id])
 
         { schedule: schedule, user: user, role: user.role }
