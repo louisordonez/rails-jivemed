@@ -40,6 +40,9 @@ schedule = Schedule.create!(user_id: doctor.id, date: Date.parse('2022-01-31')) 
 
 appointment = Appointment.create!(user_id: patient.id, schedule_id: schedule.id)
 
+update_schedule = Schedule.find(appointment.schedule_id)
+update_schedule.update(available: update_schedule.available - 1)
+
 transaction =
   Transaction.create!(
     user_id: patient.id,
