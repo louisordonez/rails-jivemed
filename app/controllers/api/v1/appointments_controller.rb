@@ -43,11 +43,12 @@ class Api::V1::AppointmentsController < ApplicationController
           cvc: card_params[:cvc]
         }
       )
+    name = "#{@current_user.first_name} #{@current_user.last_name}"
     customer =
       Stripe::Customer.create(
         {
           customer: @current_user.stripe_id,
-          name: "#{@current_user.first_name} #{@current_user.last_name}",
+          name: name,
           email: @current_user.email,
           source: token
         }
