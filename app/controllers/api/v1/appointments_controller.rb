@@ -43,26 +43,28 @@ class Api::V1::AppointmentsController < ApplicationController
           cvc: card_params[:cvc]
         }
       )
-    name = "#{@current_user.first_name} #{@current_user.last_name}"
     customer =
       Stripe::Customer.create(
         {
           customer: @current_user.stripe_id,
-          name: name,
+          name: "#{@current_user.first_name} #{@current_user.last_name}",
           email: @current_user.email,
           source: token
         }
       )
-    amount =
-      Schedule
-        .find(appointment_params[:schedule_id])
-        .user
-        .doctor_fee
-        .amount
-        .to_i * 100
     charge =
       Stripe::Charge.create(
-        { customer: customer, amount: amount, currency: 'php' }
+        {
+          customer: customer,
+          amount:
+            Schedule
+              .find(appointment_params[:schedule_id])
+              .user
+              .doctor_fee
+              .amount
+              .to_i * 100,
+          currency: 'php'
+        }
       )
     user_transaction =
       UserTransaction.new(
@@ -73,6 +75,7 @@ class Api::V1::AppointmentsController < ApplicationController
           amount: charge[:amount].to_f / 100
         }
       )
+
     if charge
       if user_transaction.save
         appointment =
