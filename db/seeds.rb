@@ -38,16 +38,19 @@ patient.update!(email_verified: true)
 
 schedule = Schedule.create!(user_id: doctor.id, date: Date.parse('2022-01-31')) # YYYY-MM-DD
 
-appointment = Appointment.create!(user_id: patient.id, schedule_id: schedule.id)
+# user_transaction =
+#   UserTransaction.create!(
+#     user_id: patient.id,
+#     email: patient.email,
+#     stripe_id: 'test_stripe_id_123456',
+#     amount: 1_333_425.to_f / 100 # 1333425 = 13334.25
+#   )
 
-update_schedule = Schedule.find(appointment.schedule_id)
-update_schedule.update(available: update_schedule.available - 1)
-
-transaction =
-  Transaction.create!(
-    user_id: patient.id,
-    appointment_id: appointment.id,
-    email: patient.email,
-    stripe_id: 'test_stripe_id_123456',
-    amount: 1_333_425.to_f / 100 # 1333425 = 13334.25
-  )
+# appointment =
+#   Appointment.create!(
+#     user_id: patient.id,
+#     schedule_id: schedule.id,
+#     user_transaction_id: user_transaction.id
+#   )
+# update_schedule = Schedule.find(appointment.schedule_id)
+# update_schedule.update(available: update_schedule.available - 1)
