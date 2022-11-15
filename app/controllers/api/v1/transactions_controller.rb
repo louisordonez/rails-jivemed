@@ -23,7 +23,7 @@ class Api::V1::TransactionsController < ApplicationController
       Stripe::Charge.create(
         {
           customer: customer,
-          amount: transaction_params[:amount], #100025 = PHP 1000.25
+          amount: transaction_params[:amount],
           currency: 'php'
         }
       )
