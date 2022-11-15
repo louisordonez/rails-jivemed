@@ -87,7 +87,6 @@ class Api::V1::UsersController < ApplicationController
              },
              status: :forbidden
     else
-      @user.transactions.destroy_all
       @user.destroy
 
       render json: {
@@ -153,7 +152,6 @@ class Api::V1::UsersController < ApplicationController
   end
 
   def destroy_current_user
-    @current_user.transactions.destroy_all
     @current_user.destroy
 
     render json: {
