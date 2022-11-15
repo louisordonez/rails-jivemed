@@ -1,47 +1,47 @@
 roles = %w[admin doctor patient]
-roles.each { |role| Role.create(name: role) }
+roles.each { |role| Role.create!(name: role) }
 
 departments = %w[Pediatrics Psychiatry Orthodontics]
-departments.each { |department| Department.create(name: department) }
+departments.each { |department| Department.create!(name: department) }
 
 admin =
-  User.create(
+  User.create!(
+    role_id: Role.find_by(name: 'admin').id,
     first_name: 'Jivemed Admin',
     last_name: 'Jivemed Admin',
     email: 'jivemed.admin@email.com',
     password: Rails.application.credentials.users.admin_password
   )
-admin.update(email_verified: true)
-admin.update(role_id: Role.find_by(name: 'admin').id)
+admin.update!(email_verified: true)
 
 doctor =
-  User.create(
+  User.create!(
+    role_id: Role.find_by(name: 'doctor').id,
     first_name: 'Maria',
     last_name: 'Dela Cruz',
     email: 'mdc.doctor@email.com',
     password: Rails.application.credentials.users.doctor_password
   )
-doctor.update(email_verified: true)
-doctor.update(role_id: Role.find_by(name: 'doctor').id)
+doctor.update!(email_verified: true)
 doctor.departments << Department.find_by(name: 'Pediatrics')
-doctor.create_doctor_fee(amount: 1000)
+doctor.create_doctor_fee!(amount: 1000)
 
 patient =
-  User.create(
+  User.create!(
+    role_id: Role.find_by(name: 'patient').id,
     first_name: 'Juan',
     last_name: 'Dela Cruz',
     email: 'jdc@email.com',
     password: Rails.application.credentials.users.patient_password
   )
-patient.update(email_verified: true)
-patient.update(role_id: Role.find_by(name: 'patient').id)
+patient.update!(email_verified: true)
 
-schedule = Schedule.create(user_id: doctor.id, date: Date.parse('2022-01-31')) #YYYY-MM-DD
+schedule = Schedule.create!(user_id: doctor.id, date: Date.parse('2022-01-31')) #YYYY-MM-DD
 
 appointment = Appointment.create!(user_id: patient.id, schedule_id: schedule.id)
 
 transaction =
-  Transaction.create(
+  Transaction.create!(
     user_id: patient.id,
     appointment_id: appointment.id,
     email: patient.email,
