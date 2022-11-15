@@ -40,4 +40,10 @@ schedule = Schedule.create(user_id: doctor.id, date: Date.parse('2022-01-31')) #
 
 # appointment = Appointment.create(schedule_id: 1, user_id: 3)
 
-# transaction = Transaction.create(appointment_id: 1)
+transaction =
+  Transaction.create(
+    user_id: patient.id,
+    email: patient.email,
+    stripe_id: 'test_stripe_id_123456',
+    amount: 1_333_425.to_f / 100
+  )
