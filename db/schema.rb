@@ -59,8 +59,6 @@ ActiveRecord::Schema[7.0].define(version: 2022_11_15_060838) do
 
   create_table "transactions", force: :cascade do |t|
     t.bigint "user_id", null: false
-    t.string "first_name"
-    t.string "last_name"
     t.string "email"
     t.string "stripe_id"
     t.decimal "amount", precision: 10, scale: 2
@@ -87,5 +85,6 @@ ActiveRecord::Schema[7.0].define(version: 2022_11_15_060838) do
   add_foreign_key "appointments", "users"
   add_foreign_key "doctor_fees", "users"
   add_foreign_key "schedules", "users"
+  add_foreign_key "transactions", "users"
   add_foreign_key "users", "roles"
 end
