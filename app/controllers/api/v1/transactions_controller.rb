@@ -13,9 +13,9 @@ class Api::V1::TransactionsController < ApplicationController
     customer =
       Stripe::Customer.create(
         {
-          customer: @current_user[:stripe_id],
-          name: "#{@current_user[:first_name]} #{@current_user[:last_name]}",
-          email: @current_user[:email],
+          customer: @current_user.stripe_id,
+          name: "#{@current_user.first_name} #{@current_user.last_name}",
+          email: @current_user.email,
           source: token
         }
       )
@@ -31,6 +31,9 @@ class Api::V1::TransactionsController < ApplicationController
       Transaction.new(
         {
           user_id: @current_user.id,
+          first_name: @current_user.first_name,
+          last_name: @current_user.last_name,
+          email: @current_user.email,
           stripe_id: charge[:id],
           amount: charge[:amount]
         }
@@ -43,7 +46,6 @@ class Api::V1::TransactionsController < ApplicationController
 
   def transaction_params
     params.require(:data).permit(
-      :user_id,
       :number,
       :exp_month,
       :exp_year,
