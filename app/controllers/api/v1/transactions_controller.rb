@@ -1,4 +1,21 @@
 class Api::V1::TransactionsController < ApplicationController
+  def index
+    transactions = Transaction.all
+
+    render json: {
+             transaction: transactions,
+             user: transactions.map { |transaction| transaction.user },
+             appointment:
+               transactions.map { |transaction|
+                 {
+                   details: transaction.appointment,
+                   schedule: transaction.appointment.schedule,
+                   doctor: transaction.appointment.schedule.user
+                 }
+               }
+           }
+  end
+
   def create
     token =
       Stripe::Token.create(
