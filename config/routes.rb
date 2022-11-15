@@ -24,10 +24,10 @@ Rails.application.routes.draw do
       resources :schedules
 
       # Appointments
-      resources :appointments
+      resources :appointments, only: %i[index show create]
 
       # User Transactions
-      resources :user_transactions, only: %i[index show create]
+      resources :user_transactions, only: %i[index show]
     end
   end
 end
