@@ -5,14 +5,16 @@ class Api::V1::TransactionsController < ApplicationController
     transactions = Transaction.all
 
     render json: {
-             transaction: transactions,
-             user: transactions.map { |transaction| transaction.user },
-             appointment:
+             transactions:
                transactions.map { |transaction|
                  {
-                   details: transaction.appointment,
-                   schedule: transaction.appointment.schedule,
-                   doctor: transaction.appointment.schedule.user
+                   transaction: transaction,
+                   user: transaction.user,
+                   appointment: {
+                     details: transaction.appointment,
+                     schedule: transaction.appointment.schedule,
+                     doctor: transaction.appointment.schedule.user
+                   }
                  }
                }
            }
@@ -61,6 +63,7 @@ class Api::V1::TransactionsController < ApplicationController
     @transaction =
       Transaction.new(
         {
+          appointment_id: transaction_params[:appointment_id],
           user_id: @current_user.id,
           email: @current_user.email,
           stripe_id: charge[:id],
@@ -90,6 +93,7 @@ class Api::V1::TransactionsController < ApplicationController
 
   def transaction_params
     params.require(:data).permit(
+      :appointment_id,
       :number,
       :exp_month,
       :exp_year,
