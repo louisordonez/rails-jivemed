@@ -5,27 +5,21 @@ class Api::V1::SchedulesController < ApplicationController
 
   def index
     schedules = Schedule.all
+    schedules =
+      schedules.map do |schedule|
+        user = User.find_by(id: schedule[:user_id])
 
-    render json: {
-             schedules:
-               schedules.map do |schedule|
-                 user = User.find_by(id: schedule[:user_id])
+        { schedule: schedule, user: user, role: user.role }
+      end
 
-                 { user: user, role: user.role, schedule: schedule }
-               end
-           },
-           status: :ok
+    render json: { schedules: schedules }, status: :ok
   end
 
   def show
     user = User.find(@schedule[:user_id])
+    user = { schedule: @schedule, user: user, role: user.role }
 
-    render json: {
-             user: user,
-             role: user.role,
-             schedules: @schedule
-           },
-           status: :ok
+    render json: user, status: :ok
   end
 
   def create
@@ -40,18 +34,18 @@ class Api::V1::SchedulesController < ApplicationController
              },
              status: :unprocessable_entity
     else
-      schedule =
-        Schedule.new(
-          schedule_params.merge(user_id: @current_user[:id], date: date)
-        )
+      new_schedule_params =
+        schedule_params.merge(user_id: @current_user[:id], date: date)
+      schedule = Schedule.new(new_schedule_params)
 
       if schedule.save
-        render json: {
-                 user: @current_user,
-                 role: @current_user.role,
-                 schedules: schedule
-               },
-               status: :created
+        schedule = {
+          user: @current_user,
+          role: @current_user.role,
+          schedules: schedule
+        }
+
+        render json: schedule, status: :created
       else
         render json: {
                  errors: {
@@ -64,15 +58,17 @@ class Api::V1::SchedulesController < ApplicationController
   end
 
   def update
-    if @schedule.update(
-         schedule_params.merge(date: Date.parse(schedule_params[:date]))
-       )
-      render json: {
-               user: @current_user,
-               role: @current_user.role,
-               schedules: @schedule
-             },
-             status: :ok
+    update_schedule_params =
+      schedule_params.merge(date: Date.parse(schedule_params[:date]))
+
+    if @schedule.update(update_schedule_params)
+      schedule = {
+        user: @current_user,
+        role: @current_user.role,
+        schedules: @schedule
+      }
+
+      render json: schedule, status: :ok
     else
       render json: {
                errors: {
@@ -86,12 +82,13 @@ class Api::V1::SchedulesController < ApplicationController
   def destroy
     @schedule.destroy
 
-    render json: {
-             user: @current_user,
-             role: @current_user.role,
-             schedules: @schedule
-           },
-           status: :ok
+    schedule = {
+      user: @current_user,
+      role: @current_user.role,
+      schedules: @schedule
+    }
+
+    render json: schedule, status: :ok
   end
 
   private
