@@ -3,46 +3,43 @@ class Api::V1::AppointmentsController < ApplicationController
 
   def index
     appointments = Appointment.all
+    appointments =
+      appointments.map do |appointment|
+        {
+          details: appointment,
+          patient: appointment.user,
+          schedule: appointment.schedule,
+          doctor: appointment.schedule.user,
+          transaction: appointment.user_transaction
+        }
+      end
 
-    render json: {
-             appointments:
-               appointments.map do |appointment|
-                 {
-                   details: appointment,
-                   patient: appointment.user,
-                   schedule: appointment.schedule,
-                   doctor: appointment.schedule.user,
-                   transaction: appointment.user_transaction
-                 }
-               end
-           },
-           status: :ok
+    render json: { appointments: appointments }, status: :ok
   end
 
   def show
-    render json: {
-             appointment: {
-               details: @appointment,
-               patient: @appointment.user,
-               schedule: @appointment.schedule,
-               doctor: @appointment.schedule.user,
-               transaction: @appointment.user_transaction
-             }
-           },
-           status: :ok
+    appointment = {
+      details: @appointment,
+      patient: @appointment.user,
+      schedule: @appointment.schedule,
+      doctor: @appointment.schedule.user,
+      transaction: @appointment.user_transaction
+    }
+
+    render json: { appointment: appointment }, status: :ok
   end
 
   def create
-    token =
-      Stripe::Token.create(
-        card: {
-          name: card_params[:name],
-          number: card_params[:number],
-          exp_month: card_params[:exp_month],
-          exp_year: card_params[:exp_year],
-          cvc: card_params[:cvc]
-        }
-      )
+    card = {
+      card: {
+        name: card_params[:name],
+        number: card_params[:number],
+        exp_month: card_params[:exp_month],
+        exp_year: card_params[:exp_year],
+        cvc: card_params[:cvc]
+      }
+    }
+    token = Stripe::Token.create(card)
     customer =
       Stripe::Customer.create(
         {
@@ -52,53 +49,47 @@ class Api::V1::AppointmentsController < ApplicationController
           source: token
         }
       )
-    charge =
-      Stripe::Charge.create(
-        {
-          customer: customer,
-          amount:
-            Schedule
-              .find(appointment_params[:schedule_id])
-              .user
-              .doctor_fee
-              .amount
-              .to_i * 100,
-          currency: 'php'
-        }
-      )
-    user_transaction =
-      UserTransaction.new(
-        {
-          user_id: @current_user.id,
-          email: @current_user.email,
-          stripe_id: charge[:id],
-          amount: charge[:amount].to_f / 100
-        }
-      )
+    charge = {
+      customer: customer,
+      amount:
+        Schedule
+          .find(appointment_params[:schedule_id])
+          .user
+          .doctor_fee
+          .amount
+          .to_i * 100,
+      currency: 'php'
+    }
+    charge = Stripe::Charge.create(charge)
+    user_transaction = {
+      user_id: @current_user.id,
+      email: @current_user.email,
+      stripe_id: charge[:id],
+      amount: charge[:amount].to_f / 100
+    }
+    user_transaction = UserTransaction.new(user_transaction)
 
     if charge
       if user_transaction.save
-        appointment =
-          Appointment.new(
-            {
-              user_id: @current_user.id,
-              schedule_id: appointment_params[:schedule_id],
-              user_transaction_id: user_transaction.id
-            }
-          )
+        appointment = {
+          user_id: @current_user.id,
+          schedule_id: appointment_params[:schedule_id],
+          user_transaction_id: user_transaction.id
+        }
+        appointment = Appointment.new(appointment)
+
         if appointment.save
           update_schedule = Schedule.find(appointment_params[:schedule_id])
           update_schedule.update(available: update_schedule.available - 1)
 
-          render json: {
-                   appointment: {
-                     details: appointment,
-                     patient: appointment.user,
-                     schedule: appointment.schedule,
-                     doctor: appointment.schedule.user
-                   }
-                 },
-                 status: :ok
+          appointment = {
+            details: appointment,
+            patient: appointment.user,
+            schedule: appointment.schedule,
+            doctor: appointment.schedule.user
+          }
+
+          render json: { appointment: appointment }, status: :ok
         else
           render json: {
                    errors: {
