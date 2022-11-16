@@ -92,7 +92,7 @@ class Api::V1::AppointmentsController < ApplicationController
         show_errors(user_transaction)
       end
     rescue Stripe::StripeError => error
-      render json: error.error, status: :unprocessable_entity
+      render json: { errors: error.error }, status: :unprocessable_entity
     end
   end
 
