@@ -21,12 +21,7 @@ class Api::V1::PatientsController < ApplicationController
 
       render json: { user: patient, email_token: email_token }, status: :created
     else
-      render json: {
-               errors: {
-                 messages: patient.errors.full_messages
-               }
-             },
-             status: :unprocessable_entity
+      show_errors(patient)
     end
   end
 

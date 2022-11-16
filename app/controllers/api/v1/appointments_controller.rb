@@ -90,20 +90,10 @@ class Api::V1::AppointmentsController < ApplicationController
 
           render json: { appointment: appointment }, status: :ok
         else
-          render json: {
-                   errors: {
-                     messages: appointment.errors.full_messages
-                   }
-                 },
-                 status: :unprocessable_entity
+          show_errors(appointment)
         end
       else
-        render json: {
-                 errors: {
-                   messages: user_transaction.errors.full_messages
-                 }
-               },
-               status: :unprocessable_entity
+        show_errors(user_transaction)
       end
     end
   end

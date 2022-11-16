@@ -87,12 +87,7 @@ class Api::V1::UsersController < ApplicationController
 
         render json: user, status: :ok
       else
-        render json: {
-                 errors: {
-                   messages: @user.errors.full_messages
-                 }
-               },
-               status: :unprocessable_entity
+        show_errors(@user)
       end
     end
   end
@@ -161,12 +156,7 @@ class Api::V1::UsersController < ApplicationController
              },
              status: :ok
     else
-      render json: {
-               errors: {
-                 messages: @current_user.errors.full_messages
-               }
-             },
-             status: :unprocessable_entity
+      show_errors(@current_user)
     end
   end
 

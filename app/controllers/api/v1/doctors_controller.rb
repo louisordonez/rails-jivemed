@@ -36,12 +36,7 @@ class Api::V1::DoctorsController < ApplicationController
              },
              status: :created
     else
-      render json: {
-               errors: {
-                 messages: doctor.errors.full_messages
-               }
-             },
-             status: :unprocessable_entity
+      show_errors(doctor)
     end
   end
 

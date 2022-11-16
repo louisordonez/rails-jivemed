@@ -46,12 +46,7 @@ class Api::V1::SchedulesController < ApplicationController
 
         render json: schedule, status: :created
       else
-        render json: {
-                 errors: {
-                   messages: schedule.errors.full_messages
-                 }
-               },
-               status: :unprocessable_entity
+        show_errors(schedule)
       end
     end
   end
@@ -69,12 +64,7 @@ class Api::V1::SchedulesController < ApplicationController
 
       render json: schedule, status: :ok
     else
-      render json: {
-               errors: {
-                 messages: @schedule.errors.full_messages
-               }
-             },
-             status: :unprocessable_entity
+      show_errors(@schedule)
     end
   end
 
