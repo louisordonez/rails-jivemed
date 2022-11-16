@@ -3,11 +3,11 @@ class Api::V1::UserTransactionsController < ApplicationController
 
   def index
     user_transactions =
-      UserTransaction.all.map do |transaction|
-        { details: transaction, user: transaction.user }
+      UserTransaction.all.map do |user_transaction|
+        { details: user_transaction, user: user_transaction.user }
       end
 
-    render json: { transactions: user_transactions }, status: :ok
+    render json: { user_transactions: user_transactions }, status: :ok
   end
 
   def show
