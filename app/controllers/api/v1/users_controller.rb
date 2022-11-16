@@ -78,13 +78,14 @@ class Api::V1::UsersController < ApplicationController
 
         @user.doctor_fee.update(amount: doctor_fee) if doctor_fee
 
-        render json: {
-                 user: @user,
-                 role: @user.role,
-                 departments: @user.departments,
-                 doctor_fee: @user.doctor_fee
-               },
-               status: :ok
+        user = {
+          user: @user,
+          role: @user.role,
+          departments: @user.departments,
+          doctor_fee: @user.doctor_fee
+        }
+
+        render json: user, status: :ok
       else
         render json: {
                  errors: {
