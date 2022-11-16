@@ -40,6 +40,7 @@ class Api::V1::AppointmentsController < ApplicationController
         }
       }
       token = Stripe::Token.create(card)
+
       name = "#{@current_user.first_name} #{@current_user.last_name}"
       customer = {
         customer: @current_user.stripe_id,
@@ -48,6 +49,7 @@ class Api::V1::AppointmentsController < ApplicationController
         source: token
       }
       customer = Stripe::Customer.create(customer)
+
       amount =
         Schedule
           .find(appointment_params[:schedule_id])
@@ -57,6 +59,7 @@ class Api::V1::AppointmentsController < ApplicationController
           .to_i * 100
       charge = { customer: customer, amount: amount, currency: 'php' }
       charge = Stripe::Charge.create(charge)
+
       user_transaction = {
         user_id: @current_user.id,
         email: @current_user.email,
