@@ -44,8 +44,8 @@ class Api::V1::AppointmentsController < ApplicationController
       customer = {
         customer: @current_user.stripe_id,
         name: name,
-        email: @current_user.email
-        # source: token
+        email: @current_user.email,
+        source: token
       }
       customer = Stripe::Customer.create(customer)
       amount =
