@@ -131,7 +131,7 @@ class Api::V1::AppointmentsController < ApplicationController
   def schedule_available?
     schedule = Schedule.find(appointment_params[:schedule_id])
 
-    return schedule.available > 0 ? true : false
+    return true if schedule.available > 0
   end
 
   def set_appointment
