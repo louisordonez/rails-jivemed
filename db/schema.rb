@@ -53,7 +53,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_11_15_151602) do
   create_table "schedules", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.date "date"
-    t.integer "available", default: 20
+    t.integer "available", default: 1
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_schedules_on_user_id"
