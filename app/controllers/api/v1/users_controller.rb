@@ -6,7 +6,24 @@ class Api::V1::UsersController < ApplicationController
     users =
       User
         .all
-        .select { |user| user.role != admin_role }
+        .select { |user| user.role != admin_role && !user.deleted_at }
+        .map do |user|
+          {
+            user: user,
+            role: user.role,
+            departments: user.departments,
+            doctor_fee: user.doctor_fee
+          }
+        end
+
+    render json: { users: users }, status: :ok
+  end
+
+  def destroyed
+    users =
+      User
+        .all
+        .select { |user| user.role != admin_role && user.deleted_at }
         .map do |user|
           {
             user: user,
@@ -20,13 +37,14 @@ class Api::V1::UsersController < ApplicationController
   end
 
   def show
-    render json: {
-             user: @user,
-             role: @user.role,
-             departments: @user.departments,
-             doctor_fee: @user.doctor_fee
-           },
-           status: :ok
+    user = {
+      user: @user,
+      role: @user.role,
+      departments: @user.departments,
+      doctor_fee: @user.doctor_fee
+    }
+
+    render json: user, status: :ok
   end
 
   def update
@@ -60,20 +78,16 @@ class Api::V1::UsersController < ApplicationController
 
         @user.doctor_fee.update(amount: doctor_fee) if doctor_fee
 
-        render json: {
-                 user: @user,
-                 role: @user.role,
-                 departments: @user.departments,
-                 doctor_fee: @user.doctor_fee
-               },
-               status: :ok
+        user = {
+          user: @user,
+          role: @user.role,
+          departments: @user.departments,
+          doctor_fee: @user.doctor_fee
+        }
+
+        render json: user, status: :ok
       else
-        render json: {
-                 errors: {
-                   messages: @user.errors.full_messages
-                 }
-               },
-               status: :unprocessable_entity
+        show_errors(@user)
       end
     end
   end
@@ -87,8 +101,7 @@ class Api::V1::UsersController < ApplicationController
              },
              status: :forbidden
     else
-      @user.transactions.destroy_all
-      @user.destroy
+      @user.update(deleted_at: DateTime.now())
 
       render json: {
                user: @user,
@@ -143,18 +156,12 @@ class Api::V1::UsersController < ApplicationController
              },
              status: :ok
     else
-      render json: {
-               errors: {
-                 messages: @current_user.errors.full_messages
-               }
-             },
-             status: :unprocessable_entity
+      show_errors(@current_user)
     end
   end
 
   def destroy_current_user
-    @current_user.transactions.destroy_all
-    @current_user.destroy
+    @current_user.update(deleted_at: DateTime.now())
 
     render json: {
              user: @current_user,

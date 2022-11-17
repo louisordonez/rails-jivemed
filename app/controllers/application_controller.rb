@@ -5,6 +5,15 @@ class ApplicationController < ActionController::API
 
   private
 
+  def show_errors(param)
+    render json: {
+             errors: {
+               messages: param.errors.full_messages
+             }
+           },
+           status: :unprocessable_entity
+  end
+
   def remove_whitespace(text)
     text.strip.gsub(/\s+/, ' ')
   end

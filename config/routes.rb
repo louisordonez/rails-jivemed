@@ -14,14 +14,20 @@ Rails.application.routes.draw do
       resources :patients, only: %i[index create]
       resources :doctors, only: %i[index create]
 
+      # Destroyed
+      get '/destroyed/users', to: 'users#destroyed'
+
       # Departments
       resources :departments
 
       # Schedules
       resources :schedules
 
-      # Transactions
-      resources :transactions
+      # Appointments
+      resources :appointments, only: %i[index show create]
+
+      # User Transactions
+      resources :user_transactions, only: %i[index show]
     end
   end
 end

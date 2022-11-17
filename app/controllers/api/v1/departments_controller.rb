@@ -20,12 +20,7 @@ class Api::V1::DepartmentsController < ApplicationController
       if department.save
         render json: { department: department }, status: :created
       else
-        render json: {
-                 errors: {
-                   messages: department.errors.full_messages
-                 }
-               },
-               status: :unprocessable_entity
+        show_errors(department)
       end
     end
   end
@@ -37,12 +32,7 @@ class Api::V1::DepartmentsController < ApplicationController
       if @department.update(department_params.merge(name: name))
         render json: { department: @department }, status: :ok
       else
-        render json: {
-                 errors: {
-                   messages: @department.errors.full_messages
-                 }
-               },
-               status: :unprocessable_entity
+        show_errors(@department)
       end
     end
   end
