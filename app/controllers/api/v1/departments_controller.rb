@@ -46,7 +46,7 @@ class Api::V1::DepartmentsController < ApplicationController
   private
 
   def department_exists?(name)
-    return false unless Department.exists?(name: name)
+    false unless Department.exists?(name: name)
 
     render json: {
              errors: {
