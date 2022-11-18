@@ -55,3 +55,5 @@ gem 'jwt'
 gem 'bcrypt'
 
 gem 'stripe'
+
+gem "letter_opener", group: :development
