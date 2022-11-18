@@ -37,6 +37,7 @@ patient =
 patient.update!(email_verified: true)
 
 schedule = Schedule.create!(user_id: doctor.id, date: Date.parse('2022-01-31')) # YYYY-MM-DD
+schedule = Schedule.create!(user_id: doctor.id, date: Date.parse('2022-02-01')) # YYYY-MM-DD
 
 # user_transaction =
 #   UserTransaction.create!(

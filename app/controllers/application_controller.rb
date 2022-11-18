@@ -39,7 +39,7 @@ class ApplicationController < ActionController::API
   end
 
   def restrict_admin
-    if is_admin_role?(@current_user)
+    unless is_admin_role?(@current_user)
       render json: {
                errors: {
                  messages: ['Request forbidden.']
@@ -50,7 +50,7 @@ class ApplicationController < ActionController::API
   end
 
   def restrict_patient
-    if is_patient_role?(@current_user)
+    unless is_patient_role?(@current_user)
       render json: {
                errors: {
                  messages: ['Request forbidden.']
