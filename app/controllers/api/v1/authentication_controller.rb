@@ -57,10 +57,14 @@ class Api::V1::AuthenticationController < ApplicationController
                  }
                },
                status: :accepted
+
+        # redirect_to JIVEMED_URL, allow_other_host: true
       else
         @user.update(email_verified: true)
 
         render json: { user: @user }, status: :ok
+
+        # redirect_to JIVEMED_URL, allow_other_host: true
       end
     end
   end
