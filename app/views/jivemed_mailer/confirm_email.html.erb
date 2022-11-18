@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <style>
+      /* Email styles need to be inline */
+    </style>
+  </head>
+
+  <body>
+    <h1>Welcome to Jivemed, <% @user.first_name %> <%= @user.last_name %>!</h1>
+    <p>
+      You have successfully signed up to Jivemed, your email is:
+      <%= @user.email %>.<br />
+    </p>
+    <p>Click the link below to confirm your account</p>
+    <div><%= link_to @url, @url %></div>
+    <p>Thanks for joining and have a great day!</p>
+  </body>
+</html>

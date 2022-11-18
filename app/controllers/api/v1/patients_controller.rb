@@ -20,6 +20,11 @@ class Api::V1::PatientsController < ApplicationController
       email_token = JsonWebToken.encode(payload, 24.hours.from_now)
 
       render json: { user: patient, email_token: email_token }, status: :created
+
+      JivemedMailer
+        .with(user: patient, email_token: email_token)
+        .confirm_email
+        .deliver_now
     else
       show_errors(patient)
     end
