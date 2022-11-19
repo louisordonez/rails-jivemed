@@ -3,6 +3,8 @@ class ApplicationController < ActionController::API
 
   before_action :authenticate_request, :email_verified
 
+  JIVEMED_URL = 'http://localhost:5173'
+
   private
 
   def show_errors(param)
