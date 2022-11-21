@@ -19,7 +19,6 @@ class User < ApplicationRecord
             uniqueness: true
   validates :email_verified, inclusion: [true, false]
   validates :password, presence: true, length: { minimum: 6 }, on: :create
-  validates :stripe_id, presence: true
 
   before_validation :set_default
 
