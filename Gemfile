@@ -56,8 +56,10 @@ gem 'bcrypt'
 
 gem 'stripe'
 
-gem "letter_opener", group: :development
+gem 'letter_opener', group: :development
 
 group :development, :test do
   gem 'rspec-rails', '~> 6.0.0'
 end
+
+gem 'figaro'
