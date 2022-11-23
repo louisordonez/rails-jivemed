@@ -79,6 +79,7 @@ class Api::V1::AuthenticationController < ApplicationController
 
       render json: {
                user: @user,
+               role: @user.role,
                access_token: access_token,
                access_token_expiration: access_token_expiration
              },
