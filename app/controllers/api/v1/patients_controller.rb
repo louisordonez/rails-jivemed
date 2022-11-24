@@ -20,14 +20,27 @@ class Api::V1::PatientsController < ApplicationController
       payload = { user_email: patient.email }
       email_token = JsonWebToken.encode(payload, 24.hours.from_now)
 
-      render json: { user: patient, email_token: email_token }, status: :created
-
       JivemedMailer
         .with(user: patient, email_token: email_token)
         .confirm_email
         .deliver_now
+
+      render json: { user: patient, email_token: email_token }, status: :created
     else
       show_errors(patient)
+    end
+  end
+
+  def admin_create
+    patient = User.new(patient_params.merge(role_id: patient_role.id))
+
+    if (is_admin_role?(@current_user))
+      if patient.save
+        patient.update(email_verified: true)
+        render json: { user: patient }, status: :created
+      else
+        show_errors(patient)
+      end
     end
   end
 
