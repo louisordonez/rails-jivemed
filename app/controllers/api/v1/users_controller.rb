@@ -1,4 +1,5 @@
 class Api::V1::UsersController < ApplicationController
+  skip_before_action :email_verified, only: [:show_current_user]
   before_action :set_user, only: %i[show update destroy]
   before_action :restrict_user, only: %i[index show update destroy]
 
