@@ -1,7 +1,6 @@
 class Api::V1::SchedulesController < ApplicationController
   before_action :set_schedule, only: %i[show update destroy]
-  before_action :restrict_patient, only: %i[create update destroy]
-  before_action :restrict_admin, only: %i[create update destroy]
+  before_action :restrict_doctor, only: %i[create update destroy]
 
   def index
     schedules =
