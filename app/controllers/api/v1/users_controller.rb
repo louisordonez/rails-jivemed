@@ -82,13 +82,13 @@ class Api::V1::UsersController < ApplicationController
     role = @current_user.role
 
     begin
-      departments = doctor_department_update_params[:department_id]
+      departments = doctor_department_params[:department_id]
     rescue ActionController::ParameterMissing
       departments = nil
     end
 
     begin
-      doctor_fee = doctor_fee_update_params[:amount]
+      doctor_fee = doctor_fee_params[:amount]
     rescue ActionController::ParameterMissing
       doctor_fee = nil
     end
@@ -144,15 +144,11 @@ class Api::V1::UsersController < ApplicationController
     params.require(:user).permit(:first_name, :last_name, :email, :password)
   end
 
-  def user_update_params
-    params.require(:user).permit(:first_name, :last_name, :email)
-  end
-
-  def doctor_department_update_params
+  def doctor_department_params
     params.require(:department).permit(department_id: [])
   end
 
-  def doctor_fee_update_params
+  def doctor_fee_params
     params.require(:doctor_fee).permit(:amount)
   end
 end
