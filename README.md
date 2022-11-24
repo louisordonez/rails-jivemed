@@ -1,24 +1,33 @@
-# README
+# rails-jivemed
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+This project is an application that allows users to create hospital appointments.
 
-Things you may want to cover:
+## Tech Stack
 
-* Ruby version
+- Ruby on Rails
+- React
 
-* System dependencies
+## Features
 
-* Configuration
+### Admin
 
-* Database creation
+- Create doctor and patient accounts.
+- Create doctor departments.
 
-* Database initialization
+### Doctor
 
-* How to run the test suite
+- Create available schedules for appointments.
+- View all scheduled appointments.
+- View all patients.
+- Update doctor department.
 
-* Services (job queues, cache servers, search engines, etc.)
+### Patient
 
-* Deployment instructions
+- Create an account to create hospital appointments.
+- Receive an email to confirm pending account signup.
+- View all doctors.
+- View all transactions made by setting up appointments.
 
-* ...
+## Frontend
+
+https://github.com/grenzk/react-jivemed
