@@ -1,12 +1,13 @@
 class Api::V1::PatientsController < ApplicationController
   skip_before_action :authenticate_request, :email_verified, only: [:create]
+  before_action :set_patient, only: [:update]
   before_action :restrict_user, only: [:index]
 
   def index
     patients =
       User
         .all
-        .select { |user| user.role == patient_role }
+        .select { |user| user.role == patient_role && !user.deleted_at }
         .map { |user| { user: user, role: user.role } }
 
     render json: { users: patients }, status: :ok
@@ -30,9 +31,34 @@ class Api::V1::PatientsController < ApplicationController
     end
   end
 
+  def update
+    if @patient.update(patient_update_params)
+      user = { user: @patient, role: @patient.role }
+
+      render json: user, status: :ok
+    else
+      show_errors(@user)
+    end
+  end
+
   private
+
+  def set_patient
+    @patient = User.find(params[:id])
+  rescue ActiveRecord::RecordNotFound
+    render json: {
+             errors: {
+               messages: ['Record not found.']
+             }
+           },
+           status: :not_found
+  end
 
   def patient_params
     params.require(:user).permit(:first_name, :last_name, :email, :password)
+  end
+
+  def patient_update_params
+    params.require(:user).permit(:first_name, :last_name, :email)
   end
 end
