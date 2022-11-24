@@ -12,7 +12,7 @@ Rails.application.routes.draw do
       put '/user/update', to: 'users#update_current_user'
       delete '/user/destroy', to: 'users#destroy_current_user'
       resources :patients, only: %i[index create]
-      resources :doctors, only: %i[index create]
+      resources :doctors, only: %i[index create update]
 
       # Destroyed
       get '/destroyed/users', to: 'users#destroyed'
