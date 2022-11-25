@@ -7,7 +7,12 @@ class Api::V1::SchedulesController < ApplicationController
       Schedule.all.map do |schedule|
         user = User.find_by(id: schedule[:user_id])
 
-        { schedule: schedule, user: user, role: user.role }
+        {
+          schedule: schedule,
+          user: user,
+          role: user.role,
+          departments: user.departments
+        }
       end
 
     render json: { schedules: schedules }, status: :ok
@@ -15,7 +20,12 @@ class Api::V1::SchedulesController < ApplicationController
 
   def show
     user = User.find(@schedule[:user_id])
-    user = { schedule: @schedule, user: user, role: user.role }
+    user = {
+      schedule: @schedule,
+      user: user,
+      role: user.role,
+      departments: user.departments
+    }
 
     render json: user, status: :ok
   end
