@@ -1,7 +1,7 @@
 class Api::V1::PatientsController < ApplicationController
   skip_before_action :authenticate_request, :email_verified, only: [:create]
   before_action :set_patient, only: [:update]
-  before_action :restrict_doctor, only: [:index]
+  before_action :restrict_user, only: [:index]
 
   def index
     patients =
