@@ -9,6 +9,7 @@ class Api::V1::AppointmentsController < ApplicationController
           patient: appointment.user,
           schedule: appointment.schedule,
           doctor: appointment.schedule.user,
+          departments: appointment.schedule.user.departments,
           transaction: appointment.user_transaction
         }
       end
@@ -22,6 +23,7 @@ class Api::V1::AppointmentsController < ApplicationController
       patient: @appointment.user,
       schedule: @appointment.schedule,
       doctor: @appointment.schedule.user,
+      departments: @appointment.schedule.user.departments,
       transaction: @appointment.user_transaction
     }
 
