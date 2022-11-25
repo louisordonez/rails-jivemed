@@ -117,15 +117,24 @@ class Api::V1::UsersController < ApplicationController
   end
 
   def destroy_current_user
-    @current_user.update(deleted_at: DateTime.now())
+    if (is_admin_role?(@current_user))
+      render json: {
+               errors: {
+                 messages: ['Cannot delete admin account.']
+               }
+             },
+             status: :forbidden
+    else
+      @current_user.update(deleted_at: DateTime.now())
 
-    render json: {
-             user: @current_user,
-             role: @current_user.role,
-             departments: @current_user.departments,
-             doctor_fee: @current_user.doctor_fee
-           },
-           status: :ok
+      render json: {
+               user: @current_user,
+               role: @current_user.role,
+               departments: @current_user.departments,
+               doctor_fee: @current_user.doctor_fee
+             },
+             status: :ok
+    end
   end
 
   private
