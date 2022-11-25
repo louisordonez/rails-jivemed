@@ -45,7 +45,7 @@ class Api::V1::PatientsController < ApplicationController
   end
 
   def update
-    if @patient.update(patient_update_params)
+    if @patient.update(patient_params)
       user = { user: @patient, role: @patient.role }
 
       render json: user, status: :ok
@@ -69,9 +69,5 @@ class Api::V1::PatientsController < ApplicationController
 
   def patient_params
     params.require(:user).permit(:first_name, :last_name, :email, :password)
-  end
-
-  def patient_update_params
-    params.require(:user).permit(:first_name, :last_name, :email)
   end
 end

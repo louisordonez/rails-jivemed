@@ -57,7 +57,7 @@ class Api::V1::DoctorsController < ApplicationController
       doctor_fee = nil
     end
 
-    if @doctor.update(doctor_update_params)
+    if @doctor.update(doctor_params)
       if departments
         @doctor.departments.destroy_all
         departments.each do |department_id|
@@ -95,10 +95,6 @@ class Api::V1::DoctorsController < ApplicationController
 
   def doctor_params
     params.require(:user).permit(:first_name, :last_name, :email, :password)
-  end
-
-  def doctor_update_params
-    params.require(:user).permit(:first_name, :last_name, :email)
   end
 
   def doctor_department_params
