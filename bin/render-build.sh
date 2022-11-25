@@ -5,4 +5,4 @@ set -o errexit
 yarn install
 bundle install
 bundle exec rake db:migrate
-bunlde exec rake db:seed
+bundle exec rake db:seed
