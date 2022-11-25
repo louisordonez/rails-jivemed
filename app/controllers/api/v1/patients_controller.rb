@@ -18,7 +18,7 @@ class Api::V1::PatientsController < ApplicationController
 
     if patient.save
       payload = { user_email: patient.email }
-      email_token = JsonWebToken.encode(payload, 24.hours.from_now)
+      email_token = JsonWebToken.encode(payload, 30.minutes.from_now)
 
       JivemedMailer
         .with(user: patient, email_token: email_token)

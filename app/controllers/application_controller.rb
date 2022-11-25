@@ -4,6 +4,7 @@ class ApplicationController < ActionController::API
   before_action :authenticate_request, :email_verified
 
   JIVEMED_URL = 'http://localhost:5173'
+  # JIVEMED_URL = 'https://react-jivemed-426p.onrender.com'
 
   private
 

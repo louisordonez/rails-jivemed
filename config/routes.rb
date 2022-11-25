@@ -3,7 +3,7 @@ Rails.application.routes.draw do
     namespace :v1 do
       # Authentication
       post '/auth/sign_in', to: 'authentication#sign_in'
-      get '/auth/verify', to: 'authentication#verify_email'
+      post '/auth/verify', to: 'authentication#verify_email'
       get '/auth/request', to: 'authentication#request_email_token'
 
       # Users

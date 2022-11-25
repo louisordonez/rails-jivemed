@@ -12,14 +12,18 @@ class Api::V1::AuthenticationController < ApplicationController
              status: :accepted
     else
       payload = { user_email: @current_user.email }
-      new_email_token = JsonWebToken.encode(payload, 24.hours.from_now)
+      new_email_token = JsonWebToken.encode(payload, 30.minutes.from_now)
 
       JivemedMailer
         .with(user: @current_user, email_token: new_email_token)
         .confirm_email
         .deliver_now
 
-      render json: { email_token: new_email_token }, status: :ok
+      render json: {
+               user: @current_user,
+               email_token: new_email_token
+             },
+             status: :ok
     end
   end
 
@@ -56,20 +60,20 @@ class Api::V1::AuthenticationController < ApplicationController
              status: :unprocessable_entity
     else
       if @user.email_verified
-        render json: {
-                 errors: {
-                   messages: ['Your email has already been verified.']
-                 }
-               },
-               status: :accepted
+        # render json: {
+        #          errors: {
+        #            messages: ['Your email has already been verified.']
+        #          }
+        #        },
+        #        status: :accepted
 
-        # redirect_to JIVEMED_URL, allow_other_host: true
+        redirect_to JIVEMED_URL, allow_other_host: true
       else
         @user.update(email_verified: true)
 
-        render json: { user: @user }, status: :ok
+        # render json: { user: @user }, status: :ok
 
-        # redirect_to JIVEMED_URL, allow_other_host: true
+        redirect_to JIVEMED_URL, allow_other_host: true
       end
     end
   end

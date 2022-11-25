@@ -3,18 +3,58 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <style>
-      /* Email styles need to be inline */
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto,
+          Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji;
+      }
+      button {
+        text-size-adjust: 100%;
+        color-scheme: light;
+        -webkit-font-smoothing: antialiased;
+        margin: 0;
+        overflow: visible;
+        text-transform: none;
+        -webkit-box-flex: 0;
+        flex-grow: 0;
+        padding: 0;
+        appearance: none;
+        text-align: left;
+        text-decoration: none;
+        box-sizing: border-box;
+        height: 36px;
+        padding-left: 18px;
+        padding-right: 18px;
+
+        -webkit-tap-highlight-color: transparent;
+        display: inline-block;
+        width: auto;
+        border-radius: 4px;
+        font-weight: 600;
+        position: relative;
+        line-height: 1;
+        font-size: 14px;
+        user-select: none;
+        cursor: pointer;
+        border: 1px solid transparent;
+        background-color: #228be6;
+        color: #fff;
+      }
     </style>
   </head>
 
   <body>
-    <h1>Welcome to Jivemed, <% @user.first_name %> <%= @user.last_name %>!</h1>
+    <p style="font-weight: bold">Hello, <%= @user.first_name %></p>
     <p>
-      You have successfully signed up to Jivemed, your email is:
-      <%= @user.email %>.<br />
+      Thanks for creating a Jivemed account. To continue, please confirm your
+      email address by clicking the button below:
     </p>
-    <p>Click the link below to confirm your account</p>
-    <div><%= link_to @url, @url %></div>
-    <p>Thanks for joining and have a great day!</p>
+    <div>
+      <%= button_to 'Confirm Email Address', @url, form: { target: '_blank' } %>
+    </div>
+    <p>
+      This link will be active for 30 min from the time this email was sent.
+    </p>
+    <div>Jivemed</div>
+    <div>Support Team</div>
   </body>
 </html>
