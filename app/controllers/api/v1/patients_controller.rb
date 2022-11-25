@@ -50,7 +50,7 @@ class Api::V1::PatientsController < ApplicationController
 
       render json: user, status: :ok
     else
-      show_errors(@user)
+      show_errors(@patient)
     end
   end
 
