@@ -124,8 +124,9 @@ class Api::V1::AppointmentsController < ApplicationController
   def appointment_exists?
     appointment =
       @current_user.appointments.map do |appointment|
-        appointment.schedule_id == appointment_params[:schedule_id]
+        appointment[:schedule_id] == appointment_params[:schedule_id]
       end
+
     appointment.empty? ? false : true
   end
 
