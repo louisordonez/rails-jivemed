@@ -28,6 +28,10 @@ This project is an application that allows users to create hospital appointments
 - View all doctors.
 - View all transactions made by setting up appointments.
 
+## Live Demo
+
+https://rails-jivemed.onrender.com
+
 ## Frontend
 
 https://github.com/grenzk/react-jivemed
