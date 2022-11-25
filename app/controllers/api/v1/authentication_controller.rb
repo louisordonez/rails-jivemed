@@ -14,6 +14,11 @@ class Api::V1::AuthenticationController < ApplicationController
       payload = { user_email: @current_user.email }
       new_email_token = JsonWebToken.encode(payload, 24.hours.from_now)
 
+      JivemedMailer
+        .with(user: @current_user, email_token: new_email_token)
+        .confirm_email
+        .deliver_now
+
       render json: { email_token: new_email_token }, status: :ok
     end
   end
