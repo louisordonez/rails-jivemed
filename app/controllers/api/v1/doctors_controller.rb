@@ -24,10 +24,8 @@ class Api::V1::DoctorsController < ApplicationController
 
     if doctor.save
       doctor.update(email_verified: true)
-      doctor.departments.each do |department_id|
-        doctor.departments << Department.find_by(
-          id: doctor_department_params[:department_id]
-        )
+      doctor_department_params[:department_id].each do |department_id|
+        doctor.departments << Department.find_by(id: department_id)
       end
 
       doctor.create_doctor_fee(amount: doctor_fee_params[:amount])
