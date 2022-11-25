@@ -80,7 +80,6 @@ test:
 # for a full overview on how database connection configuration can be specified.
 #
 production:
-  <<: *default
-  database: jivemed_production
-  username: jivemed
-  password: <%= ENV["JIVEMED_DATABASE_PASSWORD"] %>
+  adapter: cockroachdb
+  url: <%= ENV['DATABASE_URL'] %>
+  sslrootcert: './root.crt'

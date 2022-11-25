@@ -63,3 +63,5 @@ group :development, :test do
 end
 
 gem 'figaro'
+
+gem 'activerecord-cockroachdb-adapter', '~> 7.0.0'
