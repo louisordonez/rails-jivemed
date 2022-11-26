@@ -81,7 +81,7 @@ class Api::V1::AuthenticationController < ApplicationController
   def sign_in
     @user = User.find_by_email(params[:user][:email])
 
-    if (@user&.authenticate(params[:user][:password]))
+    if @user&.authenticate(params[:user][:password]) && !@user.deleted_at
       payload = { user_id: @user.id }
       access_token_expiration = 7.days.from_now.to_i
       access_token = JsonWebToken.encode(payload, access_token_expiration)
