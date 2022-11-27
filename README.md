@@ -37,6 +37,26 @@ This project is an application that allows users to create hospital appointments
 - View all doctors.
 - View all transactions made by setting up appointments.
 
+## Test Accounts
+
+### Admin
+
+- `email: jivemed.admin@email.com`  
+  `password: 123456`
+
+### Doctor
+
+- `email: jd.doctor@email.com`  
+  `password: 123456`
+
+- `email: mdc.doctor@email.com`  
+  `password: 123456`
+
+### Patient
+
+- `email: dc@email.com`  
+  `password: 123456`
+
 ## ERD
 
 ![ERD](./docs/images/erd/jivemed_erd.png)
