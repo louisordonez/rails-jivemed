@@ -7,14 +7,26 @@ departments.each { |department| Department.create!(name: department) }
 admin =
   User.create!(
     role_id: Role.find_by(name: 'admin').id,
-    first_name: 'Jivemed Admin',
-    last_name: 'Jivemed Admin',
+    first_name: 'Jivemed',
+    last_name: 'Admin',
     email: 'jivemed.admin@email.com',
     password: Rails.application.credentials.users.admin_password
   )
 admin.update!(email_verified: true)
 
-doctor =
+doctor1 =
+  User.create!(
+    role_id: Role.find_by(name: 'doctor').id,
+    first_name: 'John',
+    last_name: 'Doe',
+    email: 'jd.doctor@email.com',
+    password: Rails.application.credentials.users.doctor_password
+  )
+doctor1.update!(email_verified: true)
+doctor1.departments << Department.find_by(name: 'Pediatrics')
+doctor1.create_doctor_fee!(amount: 1000)
+
+doctor2 =
   User.create!(
     role_id: Role.find_by(name: 'doctor').id,
     first_name: 'Maria',
@@ -22,9 +34,9 @@ doctor =
     email: 'mdc.doctor@email.com',
     password: Rails.application.credentials.users.doctor_password
   )
-doctor.update!(email_verified: true)
-doctor.departments << Department.find_by(name: 'Pediatrics')
-doctor.create_doctor_fee!(amount: 1000)
+doctor2.update!(email_verified: true)
+doctor2.departments << Department.find_by(name: 'Psychiatry')
+doctor2.create_doctor_fee!(amount: 1000)
 
 patient =
   User.create!(
@@ -36,22 +48,5 @@ patient =
   )
 patient.update!(email_verified: true)
 
-schedule = Schedule.create!(user_id: doctor.id, date: Date.parse('2022-01-31')) # YYYY-MM-DD
-schedule = Schedule.create!(user_id: doctor.id, date: Date.parse('2022-02-01')) # YYYY-MM-DD
-
-# user_transaction =
-#   UserTransaction.create!(
-#     user_id: patient.id,
-#     email: patient.email,
-#     stripe_id: 'test_stripe_id_123456',
-#     amount: 1_333_425.to_f / 100 # 1333425 = 13334.25
-#   )
-
-# appointment =
-#   Appointment.create!(
-#     user_id: patient.id,
-#     schedule_id: schedule.id,
-#     user_transaction_id: user_transaction.id
-#   )
-# update_schedule = Schedule.find(appointment.schedule_id)
-# update_schedule.update(available: update_schedule.available - 1)
+schedule1 = Schedule.create!(user_id: doctor1.id, date: Date.parse('2022-01-31')) # YYYY-MM-DD
+schedule2 = Schedule.create!(user_id: doctor2.id, date: Date.parse('2022-02-01')) # YYYY-MM-DD
