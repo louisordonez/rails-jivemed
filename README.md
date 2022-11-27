@@ -28,6 +28,10 @@ This project is an application that allows users to create hospital appointments
 - View all doctors.
 - View all transactions made by setting up appointments.
 
+## ERD
+
+![ERD](./docs/images/erd/jivemed_erd.png)
+
 ## Live Demo
 
 https://rails-jivemed.onrender.com
