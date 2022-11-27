@@ -64,6 +64,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_11_15_151602) do
     t.string "email"
     t.string "stripe_id"
     t.decimal "amount", precision: 10, scale: 2
+    t.string "receipt_url"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_user_transactions_on_user_id"

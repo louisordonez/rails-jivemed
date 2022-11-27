@@ -68,7 +68,8 @@ class Api::V1::AppointmentsController < ApplicationController
             user_id: @current_user.id,
             email: @current_user.email,
             stripe_id: charge[:id],
-            amount: charge[:amount].to_f / 100
+            amount: charge[:amount].to_f / 100,
+            receipt_url: charge[:receipt_url]
           }
           user_transaction = UserTransaction.new(user_transaction)
 

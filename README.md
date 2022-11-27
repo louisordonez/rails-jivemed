@@ -1,11 +1,20 @@
 # rails-jivemed
 
+![ERD](./docs/images/screenshots/root.png)
+![ERD](./docs/images/screenshots/admin_dashboard.png)
+![ERD](./docs/images/screenshots/admin_add_patient.png)
+![ERD](./docs/images/screenshots/patient_add_appointment.png)
+![ERD](./docs/images/screenshots/patient_transactions.png)
+![ERD](./docs/images/screenshots/patient_view_transaction.png)
+![ERD](./docs/images/screenshots/doctor_appointments.png)
+
 This project is an application that allows users to create hospital appointments.
 
 ## Tech Stack
 
 - Ruby on Rails
 - React
+- Stripe API
 
 ## Features
 
@@ -34,8 +43,8 @@ This project is an application that allows users to create hospital appointments
 
 ## Live Demo
 
-https://rails-jivemed.onrender.com
+https://react-jivemed-426p.onrender.com
 
-## Frontend
+## Frontend Repo
 
 https://github.com/grenzk/react-jivemed

@@ -5,6 +5,7 @@ class CreateUserTransactions < ActiveRecord::Migration[7.0]
       t.string :email
       t.string :stripe_id
       t.decimal :amount, precision: 10, scale: 2
+      t.string :receipt_url
 
       t.timestamps
     end
