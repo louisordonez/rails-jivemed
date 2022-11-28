@@ -59,20 +59,17 @@ Rails.application.configure do
 
   config.action_mailer.perform_caching = false
 
-  config.action_mailer.default_url_options = {
-    host: 'example.com',
-    protocol: 'https://'
-  }
-
   # Gmail Configuration
   config.action_mailer.delivery_method = :smtp
+  host = 'https://react-jivemed-426p.onrender.com'
+  config.action_mailer.default_url_options = { host: host }
   config.action_mailer.smtp_settings = {
     port: 587,
     address: 'smtp.gmail.com',
     user_name: ENV['GMAIL_EMAIL'],
     password: ENV['GMAIL_PASSWORD'],
     authentication: :plain,
-    enable_starttls_auto: true
+    enable_starttls_auto: true,
   }
 
   # Ignore bad email addresses and do not raise email delivery errors.
