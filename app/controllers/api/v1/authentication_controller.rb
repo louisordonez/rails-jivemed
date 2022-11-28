@@ -6,8 +6,8 @@ class Api::V1::AuthenticationController < ApplicationController
     if @current_user.email_verified
       render json: {
                errors: {
-                 messages: ['Your email has already been verified.']
-               }
+                 messages: ['Your email has already been verified.'],
+               },
              },
              status: :accepted
     else
@@ -21,7 +21,7 @@ class Api::V1::AuthenticationController < ApplicationController
 
       render json: {
                user: @current_user,
-               email_token: new_email_token
+               email_token: new_email_token,
              },
              status: :ok
     end
@@ -38,40 +38,31 @@ class Api::V1::AuthenticationController < ApplicationController
     rescue ActiveRecord::RecordNotFound
       render json: {
                errors: {
-                 messages: ['Record not found.']
-               }
+                 messages: ['Record not found.'],
+               },
              },
              status: :not_found
     rescue JWT::ExpiredSignature
       render json: {
                errors: {
                  messages: [
-                   'Token has expired. Please request a new one to continue.'
-                 ]
-               }
+                   'Token has expired. Please request a new one to continue.',
+                 ],
+               },
              },
              status: :unprocessable_entity
     rescue JWT::DecodeError
       render json: {
                errors: {
-                 messages: ['Invalid token.']
-               }
+                 messages: ['Invalid token.'],
+               },
              },
              status: :unprocessable_entity
     else
       if @user.email_verified
-        # render json: {
-        #          errors: {
-        #            messages: ['Your email has already been verified.']
-        #          }
-        #        },
-        #        status: :accepted
-
         redirect_to JIVEMED_URL, allow_other_host: true
       else
         @user.update(email_verified: true)
-
-        # render json: { user: @user }, status: :ok
 
         redirect_to JIVEMED_URL, allow_other_host: true
       end
@@ -90,16 +81,16 @@ class Api::V1::AuthenticationController < ApplicationController
                user: @user,
                role: @user.role,
                access_token: access_token,
-               access_token_expiration: access_token_expiration
+               access_token_expiration: access_token_expiration,
              },
              status: :ok
     else
       render json: {
                errors: {
                  messages: [
-                   'Invalid credentials. Please check your email and password'
-                 ]
-               }
+                   'Invalid credentials. Please check your email and password',
+                 ],
+               },
              },
              status: :unauthorized
     end

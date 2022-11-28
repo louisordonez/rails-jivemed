@@ -61,8 +61,6 @@ Rails.application.configure do
 
   # Gmail Configuration
   config.action_mailer.delivery_method = :smtp
-  host = 'https://react-jivemed-426p.onrender.com'
-  config.action_mailer.default_url_options = { host: host }
   config.action_mailer.smtp_settings = {
     port: 587,
     address: 'smtp.gmail.com',

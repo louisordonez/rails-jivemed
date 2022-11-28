@@ -4,7 +4,9 @@ class JivemedMailer < ApplicationMailer
   def confirm_email
     @user = params[:user]
     @email_token = params[:email_token]
-    @url = "#{ENV['JIVEMED_CONFIRM_EMAIL_URL']}#{@email_token}"
+    @url =
+      "https://rails-jivemed.onrender.com/api/v1/auth/verify?email_token=#{@email_token}"
+    # @url = "http://localhost:3000/api/v1/auth/verify?email_token=#{@email_token}"
     mail(to: @user.email, subject: 'Welcome to Jivemed!')
   end
 end
