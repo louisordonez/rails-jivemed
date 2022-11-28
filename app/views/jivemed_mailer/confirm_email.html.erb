@@ -8,9 +8,8 @@
           Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji;
       }
 
-      a {
-        color: white;
-        text-decoration: none;
+      .text {
+        color: white !important;
       }
 
       .btn {
@@ -53,7 +52,9 @@
       Thanks for creating a Jivemed account. To continue, please confirm your
       email address by clicking the button below:
     </p>
-    <a class="btn" href="<%= @url %>" target="_blank">Confirm Email Address</a>
+    <a class="btn" href="<%= @url %>" target="_blank"
+      ><span class="text">Confirm Email Address</span></a
+    >
     <p>
       This link will be active for 30 min from the time this email was sent.
     </p>
