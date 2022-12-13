@@ -58,7 +58,7 @@ This project is an application that allows users to create hospital appointments
 
 ### Patient
 
-- `email: dc@email.com`  
+- `email: jdc@email.com`  
   `password: 123456`
 
 ### Credit Card
