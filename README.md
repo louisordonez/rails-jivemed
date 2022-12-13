@@ -61,7 +61,7 @@ This project is an application that allows users to create hospital appointments
 - `email: dc@email.com`  
   `password: 123456`
 
-### Credit Cards
+### Credit Card
 
 - `Visa`  
   `Card Number: 4242424242424242`  
