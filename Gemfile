@@ -44,9 +44,10 @@ end
 group :development do
   # Speed up commands on slow machines / big apps [https://github.com/rails/spring]
   # gem "spring"
+  gem 'prettier'
+  gem 'letter_opener'
+  gem 'rspec-rails', '~> 6.0.0'
 end
-
-gem 'prettier'
 
 gem 'rack-cors'
 
@@ -55,12 +56,6 @@ gem 'jwt'
 gem 'bcrypt'
 
 gem 'stripe'
-
-gem 'letter_opener', group: :development
-
-group :development, :test do
-  gem 'rspec-rails', '~> 6.0.0'
-end
 
 gem 'figaro'
 
