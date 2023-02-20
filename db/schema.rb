@@ -11,12 +11,15 @@
 # It's strongly recommended that you check this file into your version control system.
 
 ActiveRecord::Schema[7.0].define(version: 2022_11_15_151602) do
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+
   create_table "appointments", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.bigint "schedule_id", null: false
     t.bigint "user_transaction_id", null: false
-    t.datetime "created_at", precision: nil, null: false
-    t.datetime "updated_at", precision: nil, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["schedule_id"], name: "index_appointments_on_schedule_id"
     t.index ["user_id"], name: "index_appointments_on_user_id"
     t.index ["user_transaction_id"], name: "index_appointments_on_user_transaction_id"
@@ -24,8 +27,8 @@ ActiveRecord::Schema[7.0].define(version: 2022_11_15_151602) do
 
   create_table "departments", force: :cascade do |t|
     t.string "name"
-    t.datetime "created_at", precision: nil, null: false
-    t.datetime "updated_at", precision: nil, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "departments_users", id: false, force: :cascade do |t|
@@ -36,23 +39,23 @@ ActiveRecord::Schema[7.0].define(version: 2022_11_15_151602) do
   create_table "doctor_fees", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.decimal "amount", precision: 10, scale: 2
-    t.datetime "created_at", precision: nil, null: false
-    t.datetime "updated_at", precision: nil, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_doctor_fees_on_user_id"
   end
 
   create_table "roles", force: :cascade do |t|
     t.string "name"
-    t.datetime "created_at", precision: nil, null: false
-    t.datetime "updated_at", precision: nil, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "schedules", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.date "date"
-    t.bigint "available", default: 20
-    t.datetime "created_at", precision: nil, null: false
-    t.datetime "updated_at", precision: nil, null: false
+    t.integer "available", default: 20
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_schedules_on_user_id"
   end
 
@@ -62,8 +65,8 @@ ActiveRecord::Schema[7.0].define(version: 2022_11_15_151602) do
     t.string "stripe_id"
     t.decimal "amount", precision: 10, scale: 2
     t.string "receipt_url"
-    t.datetime "created_at", precision: nil, null: false
-    t.datetime "updated_at", precision: nil, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_user_transactions_on_user_id"
   end
 
@@ -74,9 +77,9 @@ ActiveRecord::Schema[7.0].define(version: 2022_11_15_151602) do
     t.string "email"
     t.string "password_digest"
     t.boolean "email_verified"
-    t.datetime "created_at", precision: nil, null: false
-    t.datetime "updated_at", precision: nil, null: false
-    t.datetime "deleted_at", precision: nil
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.datetime "deleted_at"
     t.bigint "role_id", null: false
     t.index ["role_id"], name: "index_users_on_role_id"
   end
